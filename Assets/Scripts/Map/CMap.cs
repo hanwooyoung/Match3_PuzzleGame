@@ -19,6 +19,7 @@ public class CMap : MonoBehaviour {
     }
 
     public Kind[,] MapArray = null;
+    public CBlock[,] BlockArray = null;
     public CBlockLoader BlockLoader = null;
 
 
@@ -39,9 +40,10 @@ public class CMap : MonoBehaviour {
                 {Kind.Wall,Kind.None,Kind.None,Kind.None,Kind.None,Kind.None,Kind.None,Kind.None,Kind.Wall},
                 {Kind.Wall,Kind.Wall,Kind.Wall,Kind.Wall,Kind.Wall,Kind.Wall,Kind.Wall,Kind.Wall,Kind.Wall}
          };
+        BlockArray = new CBlock[9,9];
 
 
-        for(int ti = 0; ti <Raw;ti++)
+        for (int ti = 0; ti <Raw;ti++)
         {
             for(int tj = 0; tj <Col;tj++)
             {
@@ -52,6 +54,7 @@ public class CMap : MonoBehaviour {
                 {
                     tBlock = GameObject.Instantiate(BlockLoader.GetPrefab(Kind.Wall), tVec, Quaternion.identity);
                     tBlock.transform.SetParent(tParent);
+                    BlockArray[ti, tj] = tBlock;
                 }
                 else if(MapArray[ti,tj] == Kind.None)
                 {
@@ -96,6 +99,7 @@ public class CMap : MonoBehaviour {
 
                     tBlock = GameObject.Instantiate(BlockLoader.GetPrefab(MapArray[ti, tj]), tVec, Quaternion.identity);
                     tBlock.transform.SetParent(tParent);
+                    BlockArray[ti, tj] = tBlock;
                 }
                 Debug.Log("(" + ti + "," + tj + ")"+ "=" + MapArray[ti, tj]);
             }
