@@ -4,10 +4,22 @@ using UnityEngine;
 
 public class CBlock : MonoBehaviour {
 
-    struct Index
+    public struct Index 
     {
-        int X;
-        int Y;
+        public int X;
+        public int Y;
+        public Vector2 Vec;
+    }
+
+    public Index BlockCoordinate = new Index();
+
+    public enum Move
+    {
+        None = 0,
+        Left = 1,
+        Right = 2,
+        Up = 3,
+        Down = 4,
     }
 
     public CMap.Kind Kind;
@@ -18,6 +30,7 @@ public class CBlock : MonoBehaviour {
         ScenePlayGeme = tScenePlayGame;
     }
 
+ 
     // Use this for initialization
     void Start () {
 		
@@ -27,9 +40,11 @@ public class CBlock : MonoBehaviour {
 	void Update () {
 		
 	}
-
+    /*
     private void OnMouseDown()
     {
         Debug.Log(Kind);
+        
     }
+    */
 }

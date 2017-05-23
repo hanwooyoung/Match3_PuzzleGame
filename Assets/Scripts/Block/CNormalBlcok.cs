@@ -8,16 +8,6 @@ public class CNormalBlcok : CBlock {
     public Vector2 OnDragVec;
     public Vector2 MoveVec;
 
-  
-
-    public enum Move
-    {
-        None = 0,
-        Left = 1,
-        Right = 2,
-        Up = 3,
-        Down = 4,
-    }
 
     public Move BlockMove = Move.None; 
 
@@ -42,10 +32,10 @@ public class CNormalBlcok : CBlock {
 
     private void OnMouseDown()
     {
-
+        Debug.Log("나는야" + "X:" + BlockCoordinate.X + "Y:" + BlockCoordinate.Y);
         IsClick = true;
         OnClickVec = Input.mousePosition;
-
+        ScenePlayGeme.SetSwapBlock(this);
     }
 
     private void OnMouseDrag()
@@ -65,6 +55,7 @@ public class CNormalBlcok : CBlock {
         {
             BlockMove = Move.Left;
             Debug.Log("Left");
+            
 
         }
         else if (MoveVec.x > 0 && MoveVec.y >= -45 && MoveVec.y <= 45)
@@ -84,9 +75,9 @@ public class CNormalBlcok : CBlock {
             Debug.Log("Down");
         }
 
-
-
-
+       
+        ScenePlayGeme.SetSwapPos(BlockMove);
+        ScenePlayGeme.IsSwap();
         IsClick = false;
         
 

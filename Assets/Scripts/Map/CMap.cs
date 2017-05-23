@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class CMap : MonoBehaviour {
 
-    private const int Raw = 9;
-    private const int Col = 9;
+    public const int Raw = 9;
+    public const int Col = 9;
 
     public enum Kind
     {
@@ -55,6 +55,9 @@ public class CMap : MonoBehaviour {
                     tBlock = GameObject.Instantiate(BlockLoader.GetPrefab(Kind.Wall), tVec, Quaternion.identity);
                     tBlock.transform.SetParent(tParent);
                     BlockArray[ti, tj] = tBlock;
+                    tBlock.BlockCoordinate.X = tj;
+                    tBlock.BlockCoordinate.Y = ti;
+                    tBlock.BlockCoordinate.Vec = tVec;
                 }
                 else if(MapArray[ti,tj] == Kind.None)
                 {
@@ -100,6 +103,9 @@ public class CMap : MonoBehaviour {
                     tBlock = GameObject.Instantiate(BlockLoader.GetPrefab(MapArray[ti, tj]), tVec, Quaternion.identity);
                     tBlock.transform.SetParent(tParent);
                     BlockArray[ti, tj] = tBlock;
+                    tBlock.BlockCoordinate.X = tj;
+                    tBlock.BlockCoordinate.Y = ti;
+                    tBlock.BlockCoordinate.Vec = tVec;
                 }
                 Debug.Log("(" + ti + "," + tj + ")"+ "=" + MapArray[ti, tj]);
             }
