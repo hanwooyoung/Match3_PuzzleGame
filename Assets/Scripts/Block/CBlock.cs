@@ -53,4 +53,9 @@ public class CBlock : MonoBehaviour {
         BlockMove = Move.None;
         ScenePlayGeme.SetSwapPos(BlockMove);
     }
+
+    public void BlockDestroy()
+    {
+        GameObject.Destroy(gameObject);
+    }
 }

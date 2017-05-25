@@ -100,5 +100,8 @@ public class CNormalBlcok : CBlock {
         Debug.Log("X"+ BlockCoordinate.X);
         Debug.Log("Y" + BlockCoordinate.Y);
     }
-    
+
+
+
+
 }

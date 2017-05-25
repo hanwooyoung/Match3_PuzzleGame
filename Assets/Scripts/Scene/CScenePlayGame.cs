@@ -12,11 +12,15 @@ public class CScenePlayGame : MonoBehaviour {
     public CBlock SeletBlock = null;
     public CBlock.Move SwapPos = CBlock.Move.None;
 
+    public CBoomCheck BoomCheck = null;
 
     private void Awake()
     {
         Map = new CMap();
-        
+        BoomCheck = new CBoomCheck();
+        BoomCheck.SetBlockArray(Map.BlockArray);
+
+
     }
 
     // Use this for initialization
@@ -35,7 +39,7 @@ public class CScenePlayGame : MonoBehaviour {
     // Update is called once per frame
     void Update()
     {
-
+       
     }
 
     public void SetSwapPos(CBlock.Move tSwapPos)
@@ -83,23 +87,96 @@ public class CScenePlayGame : MonoBehaviour {
                         Map.BlockArray[tBlock.BlockCoordinate.X, tBlock.BlockCoordinate.Y].BlockCoordinate.Y -= tY;
                         Map.BlockArray[tBlock.BlockCoordinate.X, tBlock.BlockCoordinate.Y + tY].BlockCoordinate.Y += tY;
 
-                    }                   
+                    }
+                    IsCheckUpDate();
                     tBlock.ReSetMove();
                 }
             }
         }
+
+        //BoomCheck.SetBlockArray(Map.BlockArray);
     }
 
 
 
     public void IsCheckUpDate()
     {
+        BoomCheck.SetBlockArray(Map.BlockArray);
         foreach (CBlock tBlock in Map.BlockArray)
         {
-            if(SeletBlock == tBlock)
+
+            if (SeletBlock == tBlock)
             {
                 Vector2 tVec = Vector2.zero;
+                tVec = SeletBlock.transform.position;
+                int tX = (int)tVec.x;
+                int tY = (int)tVec.y;
+
+                BoomCheck.SetSeletBlock(tBlock);
+
+                BoomCheck.LeftBoom();
+                tBlock.ReSetMove();
+              
+            }
+        }
+        BoomCheck.Stack();
+        BlockDestroy();
+    }
+
+    [Button]
+    public void Asd()
+    {
+        BoomCheck.Stack();
+    }
+
+    [Button]
+    public void BlockDestroy()
+    {
+        foreach(var ti in Map.BlockArray)
+        {
+            foreach(var tj in BoomCheck.BoomBlockList)
+            {
+                if(ti == tj)
+                {           
+                    ti.BlockDestroy();
+
+                }
+            }
+        }
+        BoomCheck.BoomBlockList.Clear();
+        BoomCheck.LeftBoomNumber = 0;
+    }
+
+
+    [Button]
+    public void Array()
+    {
+        for (int ti = 0; ti < 9; ti++)
+        {
+            for (int tj = 0; tj < 9; tj++)
+            {
+                Debug.Log("(" + tj + "," + ti + ")" + "=" + Map.BlockArray[tj, ti]);
             }
         }
     }
+    
+
+    //[Button]
+    //public void BlockNullCheck()
+    //{
+    //    foreach (var ti in Map.BlockArray)
+    //    {
+    //        if(ti == null)
+    //        {
+    //            var tX = ti.BlockCoordinate.X;
+    //            var tY = ti.BlockCoordinate.Y;
+    //            int tN = 0;
+    //            while((tY + tN + 1)<7)
+    //            {
+    //                Map.BlockArray[tX, tY + tN + 1].transform.DOMove(new Vector2(tX, tY + tN), 0.5f);
+    //            }
+
+    //        }
+    //    }
+    //}
 }
