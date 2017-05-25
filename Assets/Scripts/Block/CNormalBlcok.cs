@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Inspector;
 
 public class CNormalBlcok : CBlock {
 
@@ -9,7 +10,7 @@ public class CNormalBlcok : CBlock {
     public Vector2 MoveVec;
 
 
-    public Move BlockMove = Move.None; 
+ 
 
     private bool mIsClick = false;
     public bool IsClick
@@ -54,6 +55,7 @@ public class CNormalBlcok : CBlock {
         if (MoveVec.x < 0 && MoveVec.y >= -45 && MoveVec.y <= 45)
         {
             BlockMove = Move.Left;
+            MoveVec = Vector2.left;
             Debug.Log("Left");
             
 
@@ -61,23 +63,28 @@ public class CNormalBlcok : CBlock {
         else if (MoveVec.x > 0 && MoveVec.y >= -45 && MoveVec.y <= 45)
         {
             BlockMove = Move.Right;
+            MoveVec = Vector2.right;
             Debug.Log("Right");
 
         }
         else if (MoveVec.y > 0 && MoveVec.x >= -45 && MoveVec.x <= 45)
         {
             BlockMove = Move.Up;
+            MoveVec = Vector2.up;
             Debug.Log("Up");
         }
         else if (MoveVec.y < 0 && MoveVec.x >= -45 && MoveVec.x <= 45)
         {
             BlockMove = Move.Down;
+            MoveVec = Vector2.down;
             Debug.Log("Down");
         }
 
        
         ScenePlayGeme.SetSwapPos(BlockMove);
-        ScenePlayGeme.IsSwap();
+        ScenePlayGeme.DoSwap(MoveVec);
+        //ReSetMove();
+        
         IsClick = false;
         
 
@@ -85,5 +92,13 @@ public class CNormalBlcok : CBlock {
 
     }
 
+  
+
+    [Button]
+    public void Xy()
+    {
+        Debug.Log("X"+ BlockCoordinate.X);
+        Debug.Log("Y" + BlockCoordinate.Y);
+    }
     
 }

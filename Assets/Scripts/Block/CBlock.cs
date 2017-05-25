@@ -8,7 +8,6 @@ public class CBlock : MonoBehaviour {
     {
         public int X;
         public int Y;
-        public Vector2 Vec;
     }
 
     public Index BlockCoordinate = new Index();
@@ -23,6 +22,7 @@ public class CBlock : MonoBehaviour {
     }
 
     public CMap.Kind Kind;
+    public Move BlockMove = Move.None;
     public CScenePlayGame ScenePlayGeme = null;
 
     public void SetScene(CScenePlayGame tScenePlayGame)
@@ -47,4 +47,10 @@ public class CBlock : MonoBehaviour {
         
     }
     */
+
+    public void ReSetMove()
+    {
+        BlockMove = Move.None;
+        ScenePlayGeme.SetSwapPos(BlockMove);
+    }
 }

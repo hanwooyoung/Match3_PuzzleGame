@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Inspector;
+using DG.Tweening;
+
 
 public class CScenePlayGame : MonoBehaviour {
 
@@ -10,10 +12,10 @@ public class CScenePlayGame : MonoBehaviour {
     public CBlock SeletBlock = null;
     public CBlock.Move SwapPos = CBlock.Move.None;
 
+
     private void Awake()
     {
         Map = new CMap();
-        
         
     }
 
@@ -45,39 +47,59 @@ public class CScenePlayGame : MonoBehaviour {
     {
         SeletBlock = tBlock;
     }
+    
 
-    public void IsSwap()
+   
+    public void DoSwap(Vector2 tMoveVec)
     {
+        int tX = (int)tMoveVec.x;
+        int tY = (int)tMoveVec.y;
 
         if (SeletBlock != null && CBlock.Move.None != SwapPos)
         {
-            Vector2 SwapVec = Map.BlockArray[SeletBlock.BlockCoordinate.X - 1, SeletBlock.BlockCoordinate.Y].BlockCoordinate.Vec;
-
-        Debug.Log("여긴옴?");
-
-
-            Debug.Log("여긴옴???:"+ SwapPos);
-
-
-            switch (SwapPos)
+            foreach (CBlock tBlock in Map.BlockArray)
             {
-                case CBlock.Move.Left:
-                    Map.BlockArray[SeletBlock.BlockCoordinate.X, SeletBlock.BlockCoordinate.Y] = Map.BlockArray[SeletBlock.BlockCoordinate.X - 1, SeletBlock.BlockCoordinate.Y];
-                    Map.BlockArray[SeletBlock.BlockCoordinate.X - 1, SeletBlock.BlockCoordinate.Y] = SeletBlock;
-                    break;
+                if(tBlock == SeletBlock)
+                {
+                    CBlock tTmepBlock = null;
+                    Vector2 BlockVec = Vector2.zero;
+                    Vector2 SwapVec = Vector2.zero;
+                    var tBlockCoordinate = tBlock.BlockCoordinate;
+                    tTmepBlock = Map.BlockArray[tBlock.BlockCoordinate.X, tBlock.BlockCoordinate.Y];
+                    BlockVec = tBlock.transform.position;
+                    
+                    if (SwapPos != CBlock.Move.None)
+                    {
+                        SwapVec = Map.BlockArray[tBlock.BlockCoordinate.X + tX, tBlock.BlockCoordinate.Y + tY].transform.position;
 
+                        tBlock.transform.DOMove(SwapVec,0.1f);
+                        Map.BlockArray[tBlock.BlockCoordinate.X + tX, tBlock.BlockCoordinate.Y + tY].transform.DOMove(BlockVec, 0.1f);
+
+                        Map.BlockArray[tBlock.BlockCoordinate.X, tBlock.BlockCoordinate.Y] = Map.BlockArray[tBlock.BlockCoordinate.X + tX, tBlock.BlockCoordinate.Y + tY];
+                        Map.BlockArray[tBlock.BlockCoordinate.X + tX, tBlock.BlockCoordinate.Y + tY] = tTmepBlock;
+
+                        Map.BlockArray[tBlock.BlockCoordinate.X, tBlock.BlockCoordinate.Y].BlockCoordinate.X -= tX;
+                        Map.BlockArray[tBlock.BlockCoordinate.X + tX, tBlock.BlockCoordinate.Y].BlockCoordinate.X += tX;
+                        Map.BlockArray[tBlock.BlockCoordinate.X, tBlock.BlockCoordinate.Y].BlockCoordinate.Y -= tY;
+                        Map.BlockArray[tBlock.BlockCoordinate.X, tBlock.BlockCoordinate.Y + tY].BlockCoordinate.Y += tY;
+
+                    }                   
+                    tBlock.ReSetMove();
+                }
             }
-
-            Map.BlockArray[SeletBlock.BlockCoordinate.X, SeletBlock.BlockCoordinate.Y].transform.position = SwapVec;
-            Map.BlockArray[SeletBlock.BlockCoordinate.X - 1, SeletBlock.BlockCoordinate.Y].transform.position = SeletBlock.BlockCoordinate.Vec;
         }
     }
-	
-    [Button]
-    public void asd()
-    {
-        Map.BlockArray[1, 1].transform.position = new Vector2(10, 10);
-    }
-    
 
+
+
+    public void IsCheckUpDate()
+    {
+        foreach (CBlock tBlock in Map.BlockArray)
+        {
+            if(SeletBlock == tBlock)
+            {
+                Vector2 tVec = Vector2.zero;
+            }
+        }
+    }
 }

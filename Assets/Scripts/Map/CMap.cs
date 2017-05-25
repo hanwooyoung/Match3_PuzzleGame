@@ -50,28 +50,27 @@ public class CMap : MonoBehaviour {
                 CBlock tBlock = null;
                 Vector2 tVec = new Vector2((float)tj / 2 - 2, (float)ti / 2 - 2);
 
-                if (MapArray[ti, tj] == Kind.Wall)
+                if (MapArray[tj, ti] == Kind.Wall)
                 {
                     tBlock = GameObject.Instantiate(BlockLoader.GetPrefab(Kind.Wall), tVec, Quaternion.identity);
                     tBlock.transform.SetParent(tParent);
-                    BlockArray[ti, tj] = tBlock;
+                    BlockArray[tj, ti] = tBlock;
                     tBlock.BlockCoordinate.X = tj;
                     tBlock.BlockCoordinate.Y = ti;
-                    tBlock.BlockCoordinate.Vec = tVec;
                 }
-                else if(MapArray[ti,tj] == Kind.None)
+                else if(MapArray[tj,ti] == Kind.None)
                 {
                     int tRandom = 0;
                     tRandom = Random.Range(2, 7);
                     Kind tCurrentBlock = (Kind)tRandom;
                   
-                    MapArray[ti, tj] = tCurrentBlock;
+                    MapArray[tj, ti] = tCurrentBlock;
                     Kind tRawBlock = tCurrentBlock;
 
 
                     if (tj >= 3)
                     {
-                        if (MapArray[ti, tj] == MapArray[ti, tj - 1] && MapArray[ti, tj] == MapArray[ti,tj-2])
+                        if (MapArray[tj, ti] == MapArray[tj - 1, ti] && MapArray[tj, ti] == MapArray[tj - 2,ti])
                         {
                             do
                             {
@@ -80,13 +79,13 @@ public class CMap : MonoBehaviour {
                             while (tCurrentBlock == (Kind)tRandom);
 
                             tCurrentBlock = (Kind)tRandom;
-                            MapArray[ti, tj] = tCurrentBlock;
+                            MapArray[tj, ti] = tCurrentBlock;
                             tRawBlock = tCurrentBlock;
                         }
                     }
                     if(ti >= 3)
                     {
-                        if (MapArray[ti, tj] == MapArray[ti - 1, tj] && MapArray[ti, tj] == MapArray[ti - 2, tj])
+                        if (MapArray[tj, ti] == MapArray[tj, ti - 1] && MapArray[tj, ti] == MapArray[tj, ti - 2])
                         {
                             do
                             {
@@ -95,19 +94,18 @@ public class CMap : MonoBehaviour {
                             while (tCurrentBlock == (Kind)tRandom && tRawBlock == (Kind)tRandom);
 
                             tCurrentBlock = (Kind)tRandom;
-                            MapArray[ti, tj] = tCurrentBlock;
+                            MapArray[tj, ti] = tCurrentBlock;
                         }
                     }
 
 
-                    tBlock = GameObject.Instantiate(BlockLoader.GetPrefab(MapArray[ti, tj]), tVec, Quaternion.identity);
+                    tBlock = GameObject.Instantiate(BlockLoader.GetPrefab(MapArray[tj, ti]), tVec, Quaternion.identity);
                     tBlock.transform.SetParent(tParent);
-                    BlockArray[ti, tj] = tBlock;
+                    BlockArray[tj, ti] = tBlock;
                     tBlock.BlockCoordinate.X = tj;
                     tBlock.BlockCoordinate.Y = ti;
-                    tBlock.BlockCoordinate.Vec = tVec;
                 }
-                Debug.Log("(" + ti + "," + tj + ")"+ "=" + MapArray[ti, tj]);
+                Debug.Log("(" + tj + "," + ti + ")"+ "=" + MapArray[tj, ti]);
             }
         }
     }
