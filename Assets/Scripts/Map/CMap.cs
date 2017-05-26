@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 public class CMap : MonoBehaviour {
 
@@ -20,6 +21,7 @@ public class CMap : MonoBehaviour {
 
     public Kind[,] MapArray = null;
     public CBlock[,] BlockArray = null;
+    public Vector2[,] VecArray = null;
     public CBlockLoader BlockLoader = null;
 
 
@@ -41,6 +43,7 @@ public class CMap : MonoBehaviour {
                 {Kind.Wall,Kind.Wall,Kind.Wall,Kind.Wall,Kind.Wall,Kind.Wall,Kind.Wall,Kind.Wall,Kind.Wall}
          };
         BlockArray = new CBlock[9,9];
+        VecArray = new Vector2[9, 9];
 
 
         for (int ti = 0; ti <Raw;ti++)
@@ -57,6 +60,7 @@ public class CMap : MonoBehaviour {
                     BlockArray[tj, ti] = tBlock;
                     tBlock.BlockCoordinate.X = tj;
                     tBlock.BlockCoordinate.Y = ti;
+                    VecArray[tj, ti] = tVec;
                 }
                 else if(MapArray[tj,ti] == Kind.None)
                 {
@@ -104,8 +108,30 @@ public class CMap : MonoBehaviour {
                     BlockArray[tj, ti] = tBlock;
                     tBlock.BlockCoordinate.X = tj;
                     tBlock.BlockCoordinate.Y = ti;
+                    VecArray[tj, ti] = tVec;
                 }
                 Debug.Log("(" + tj + "," + ti + ")"+ "=" + MapArray[tj, ti]);
+            }
+        }
+    }
+
+
+    public void BlockNullCheck()
+    {
+        foreach (var ti in BlockArray)
+        {
+            if (ti == null)
+            {
+                var tX = ti.BlockCoordinate.X;
+                var tY = ti.BlockCoordinate.Y;
+                int tN = 0;
+
+                while ((tY + tN + 1) < 8)
+                {
+                    BlockArray[tX, tY + tN + 1].transform.DOMove(VecArray[tX, tY + tN], 0.5f);
+                    tN++;
+                }
+                //Debug.Log("Null X:" + tX + "Y: " + tY);
             }
         }
     }

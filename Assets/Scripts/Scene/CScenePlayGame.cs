@@ -39,7 +39,7 @@ public class CScenePlayGame : MonoBehaviour {
     // Update is called once per frame
     void Update()
     {
-       
+        Map.BlockNullCheck();
     }
 
     public void SetSwapPos(CBlock.Move tSwapPos)
