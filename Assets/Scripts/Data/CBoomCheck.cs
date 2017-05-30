@@ -12,20 +12,20 @@ public class CBoomCheck : MonoBehaviour {
     public Stack<CBlock> BoomBlockList = new Stack<CBlock>();
 
     public int LeftBoomNumber = 0;
-    //public int LeftBoomCount = 0;
-    private void Awake()
+
+    private bool mIsBoomCheck = false;
+    public bool IsBoomCheck
     {
-        //BoomBlockList =;
+        get
+        {
+            return mIsBoomCheck;
+        }
+        set
+        {
+            mIsBoomCheck = value;
+        }
     }
-    // Use this for initialization
-    void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+
 
     public void LeftBoom()
     {
@@ -36,8 +36,8 @@ public class CBoomCheck : MonoBehaviour {
         {
             while (tIsResult)
             {
-                Debug.Log("asdX" + (SeletBlock.BlockCoordinate.X - LeftBoomNumber) + "asdY" + SeletBlock.BlockCoordinate.Y);
-                Debug.Log(BlockArray[SeletBlock.BlockCoordinate.X - LeftBoomNumber, SeletBlock.BlockCoordinate.Y].Kind);
+                //Debug.Log("asdX" + (SeletBlock.BlockCoordinate.X - LeftBoomNumber) + "asdY" + SeletBlock.BlockCoordinate.Y);
+                //Debug.Log(BlockArray[SeletBlock.BlockCoordinate.X - LeftBoomNumber, SeletBlock.BlockCoordinate.Y].Kind);
 
                 if (SeletBlockKind == BlockArray[SeletBlock.BlockCoordinate.X - LeftBoomNumber, SeletBlock.BlockCoordinate.Y].Kind)
                 {
@@ -71,7 +71,12 @@ public class CBoomCheck : MonoBehaviour {
         }
         if(LeftBoomCount <= 2)
         {
+            IsBoomCheck = false;
             BoomBlockList.Clear();
+        }
+        else
+        {
+            IsBoomCheck = true;
         }
         LeftBoomCount = 0;
     }
@@ -95,5 +100,5 @@ public class CBoomCheck : MonoBehaviour {
         }
     }
 
- 
+
 }

@@ -14,12 +14,16 @@ public class CScenePlayGame : MonoBehaviour {
 
     public CBoomCheck BoomCheck = null;
 
+    public CPossibleBoomCheck PossibleBoomCheck = null;
+
     private void Awake()
     {
         Map = new CMap();
         BoomCheck = new CBoomCheck();
         BoomCheck.SetBlockArray(Map.BlockArray);
 
+        PossibleBoomCheck = new CPossibleBoomCheck();
+        PossibleBoomCheck.SetMapArray(Map.MapArray);
 
     }
 
@@ -42,6 +46,8 @@ public class CScenePlayGame : MonoBehaviour {
     void Update()
     {
         Map.BlockNullCheck();
+        
+        PossibleBoomCheck.SetMapArray(Map.MapArray);
     }
 
     public void SetSwapPos(CBlock.Move tSwapPos)
@@ -54,7 +60,11 @@ public class CScenePlayGame : MonoBehaviour {
         SeletBlock = tBlock;
     }
     
-
+    [Button]
+    public void InPossibleBoomCheck()
+    {
+        PossibleBoomCheck.IsCheck();
+    }
    
     public void DoSwap(Vector2 tMoveVec)
     {
@@ -70,16 +80,21 @@ public class CScenePlayGame : MonoBehaviour {
                     CBlock tTmepBlock = null;
                     Vector2 BlockVec = Vector2.zero;
                     Vector2 SwapVec = Vector2.zero;
+                    Vector2 ReturnBlockVec = Vector2.zero;
+                    Vector2 ReturnSwapVec = Vector2.zero;
+
                     var tBlockX = tBlock.BlockCoordinate.X;
                     var tBlockY = tBlock.BlockCoordinate.Y;
                     CMap.Kind tTmepKind = tBlock.Kind;
                     tTmepBlock = Map.BlockArray[tBlock.BlockCoordinate.X, tBlock.BlockCoordinate.Y];
                     BlockVec = tBlock.transform.position;
+                    ReturnBlockVec = BlockVec;
                     
 
                     if (SwapPos != CBlock.Move.None)
                     {
                         SwapVec = Map.BlockArray[tBlockX + tX, tBlockY + tY].transform.position;
+                        ReturnSwapVec = SwapVec;
 
                         tBlock.transform.DOMove(SwapVec,0.1f);
                         Map.BlockArray[tBlockX + tX, tBlockY + tY].transform.DOMove(BlockVec, 0.1f);
@@ -96,16 +111,104 @@ public class CScenePlayGame : MonoBehaviour {
                         Map.MapArray[tBlockX, tBlockY] = Map.MapArray[tBlockX + tX, tBlockY +tY];
                         Map.MapArray[tBlockX + tX, tBlockY + tY] = tTmepKind;
 
+                        IsCheckUpDate();
+                        if (false == BoomCheck.IsBoomCheck)
+                        {
+                            //tX *= -1;
+                            //tY *= -1;
+                            Debug.Log(ReturnBlockVec);
+                            Debug.Log(ReturnSwapVec);
+                            Debug.Log(tBlockX );
+                            Debug.Log(tBlockY );
+
+                            Debug.Log(tBlockX + tX);
+                            Debug.Log(tBlockY + tY);
+
+
+
+                            //SwapVec = Map.BlockArray[tBlockX + tX, tBlockY + tY].transform.position;
+                         
+
+                            //tBlock.transform.DOMove(ReturnBlockVec, 0.1f);
+                            //Map.BlockArray[tBlockX + tX, tBlockY + tY].transform.DOMove(ReturnSwapVec, 0.1f);
+                            
+
+                            //Map.BlockArray[tBlockX, tBlockY] = Map.BlockArray[tBlockX + tX, tBlockY + tY];
+                            //Map.BlockArray[tBlockX + tX, tBlockY + tY] = tTmepBlock;
+
+                            //Map.BlockArray[tBlockX, tBlockY].BlockCoordinate.X -= tX;
+                            //Map.BlockArray[tBlockX + tX, tBlockY].BlockCoordinate.X += tX;
+                            //Map.BlockArray[tBlockX, tBlockY].BlockCoordinate.Y -= tY;
+                            //Map.BlockArray[tBlockX, tBlockY + tY].BlockCoordinate.Y += tY;
+
+                            //tTmepKind = Map.MapArray[tBlockX, tBlockY];
+                            //Map.MapArray[tBlockX, tBlockY] = Map.MapArray[tBlockX + tX, tBlockY + tY];
+                            //Map.MapArray[tBlockX + tX, tBlockY + tY] = tTmepKind;
+                            //UnSwap(tMoveVec);
+                        }
                     }
-                    IsCheckUpDate();
+                    
                     tBlock.ReSetMove();
                 }
             }
         }
-
-        //BoomCheck.SetBlockArray(Map.BlockArray);
     }
 
+
+    public void UnSwap(Vector2 tMoveVec)
+    {
+        tMoveVec *=-1;
+        int tX = (int)tMoveVec.x;
+        int tY = (int)tMoveVec.y;
+        Debug.Log("X"+tX+"Y"+tY);
+
+
+  
+            Debug.Log("1차");
+        foreach (CBlock tBlock in Map.BlockArray)
+        {
+
+            if (tBlock == SeletBlock)
+            {
+
+                CBlock tTmepBlock = null;
+                Vector2 BlockVec = Vector2.zero;
+                Vector2 SwapVec = Vector2.zero;
+                var tBlockX = tBlock.BlockCoordinate.X;
+                var tBlockY = tBlock.BlockCoordinate.Y;
+                Debug.Log("BlockX" + tBlockX);
+                Debug.Log("BlockY" + tBlockY);
+
+                CMap.Kind tTmepKind = tBlock.Kind;
+                tTmepBlock = Map.BlockArray[tBlock.BlockCoordinate.X, tBlock.BlockCoordinate.Y];
+                BlockVec = tBlock.transform.position;
+
+
+                SwapVec = Map.BlockArray[tBlockX + tX, tBlockY + tY].transform.position;
+                Debug.Log("SwapVec" + SwapVec);
+                //if (new Vector2(tBlock.transform.position.x, tBlock.transform.position.y) == SwapVec)
+                //{
+                    tBlock.transform.DOMove(BlockVec, 0.1f);
+                    Map.BlockArray[tBlockX + tX, tBlockY + tY].transform.DOMove(SwapVec, 0.1f);
+                //}
+
+                Map.BlockArray[tBlockX, tBlockY] = Map.BlockArray[tBlockX + tX, tBlockY + tY];
+                Map.BlockArray[tBlockX + tX, tBlockY + tY] = tTmepBlock;
+
+                Map.BlockArray[tBlockX, tBlockY].BlockCoordinate.X -= tX;
+                Map.BlockArray[tBlockX + tX, tBlockY].BlockCoordinate.X += tX;
+                Map.BlockArray[tBlockX, tBlockY].BlockCoordinate.Y -= tY;
+                Map.BlockArray[tBlockX, tBlockY + tY].BlockCoordinate.Y += tY;
+
+                tTmepKind = Map.MapArray[tBlockX, tBlockY];
+                Map.MapArray[tBlockX, tBlockY] = Map.MapArray[tBlockX + tX, tBlockY + tY];
+                Map.MapArray[tBlockX + tX, tBlockY + tY] = tTmepKind;
+
+
+            }
+        }
+        
+    }
 
 
     public void IsCheckUpDate()
@@ -125,21 +228,12 @@ public class CScenePlayGame : MonoBehaviour {
 
                 BoomCheck.LeftBoom();
                 tBlock.ReSetMove();
-              
             }
         }
         BoomCheck.Stack();
         BlockDestroy();
     }
 
-    public void PossibleBoomCheck()
-    {
-        foreach(var tBlockKind in Map.MapArray)
-        {
-            
-
-        }
-    }
 
 
     public IEnumerator ReCreateBlock()
