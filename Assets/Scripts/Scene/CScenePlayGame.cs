@@ -25,7 +25,9 @@ public class CScenePlayGame : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-        Map.CreateMap(this.transform);
+        Map.SetParent(this.transform);
+        Map.CreateMap();
+        StartCoroutine(ReCreateBlock());
 
         for (int ti = 0; ti < CMap.Raw; ti++)
         {
@@ -68,24 +70,31 @@ public class CScenePlayGame : MonoBehaviour {
                     CBlock tTmepBlock = null;
                     Vector2 BlockVec = Vector2.zero;
                     Vector2 SwapVec = Vector2.zero;
-                    var tBlockCoordinate = tBlock.BlockCoordinate;
+                    var tBlockX = tBlock.BlockCoordinate.X;
+                    var tBlockY = tBlock.BlockCoordinate.Y;
+                    CMap.Kind tTmepKind = tBlock.Kind;
                     tTmepBlock = Map.BlockArray[tBlock.BlockCoordinate.X, tBlock.BlockCoordinate.Y];
                     BlockVec = tBlock.transform.position;
                     
+
                     if (SwapPos != CBlock.Move.None)
                     {
-                        SwapVec = Map.BlockArray[tBlock.BlockCoordinate.X + tX, tBlock.BlockCoordinate.Y + tY].transform.position;
+                        SwapVec = Map.BlockArray[tBlockX + tX, tBlockY + tY].transform.position;
 
                         tBlock.transform.DOMove(SwapVec,0.1f);
-                        Map.BlockArray[tBlock.BlockCoordinate.X + tX, tBlock.BlockCoordinate.Y + tY].transform.DOMove(BlockVec, 0.1f);
+                        Map.BlockArray[tBlockX + tX, tBlockY + tY].transform.DOMove(BlockVec, 0.1f);
 
-                        Map.BlockArray[tBlock.BlockCoordinate.X, tBlock.BlockCoordinate.Y] = Map.BlockArray[tBlock.BlockCoordinate.X + tX, tBlock.BlockCoordinate.Y + tY];
-                        Map.BlockArray[tBlock.BlockCoordinate.X + tX, tBlock.BlockCoordinate.Y + tY] = tTmepBlock;
+                        Map.BlockArray[tBlockX, tBlockY] = Map.BlockArray[tBlockX + tX, tBlockY + tY];
+                        Map.BlockArray[tBlockX + tX, tBlockY + tY] = tTmepBlock;
 
-                        Map.BlockArray[tBlock.BlockCoordinate.X, tBlock.BlockCoordinate.Y].BlockCoordinate.X -= tX;
-                        Map.BlockArray[tBlock.BlockCoordinate.X + tX, tBlock.BlockCoordinate.Y].BlockCoordinate.X += tX;
-                        Map.BlockArray[tBlock.BlockCoordinate.X, tBlock.BlockCoordinate.Y].BlockCoordinate.Y -= tY;
-                        Map.BlockArray[tBlock.BlockCoordinate.X, tBlock.BlockCoordinate.Y + tY].BlockCoordinate.Y += tY;
+                        Map.BlockArray[tBlockX, tBlockY].BlockCoordinate.X -= tX;
+                        Map.BlockArray[tBlockX + tX, tBlockY].BlockCoordinate.X += tX;
+                        Map.BlockArray[tBlockX, tBlockY].BlockCoordinate.Y -= tY;
+                        Map.BlockArray[tBlockX, tBlockY + tY].BlockCoordinate.Y += tY;
+
+                        tTmepKind = Map.MapArray[tBlockX, tBlockY];
+                        Map.MapArray[tBlockX, tBlockY] = Map.MapArray[tBlockX + tX, tBlockY +tY];
+                        Map.MapArray[tBlockX + tX, tBlockY + tY] = tTmepKind;
 
                     }
                     IsCheckUpDate();
@@ -123,6 +132,84 @@ public class CScenePlayGame : MonoBehaviour {
         BlockDestroy();
     }
 
+    public void PossibleBoomCheck()
+    {
+        foreach(var tBlockKind in Map.MapArray)
+        {
+            
+
+        }
+    }
+
+
+    public IEnumerator ReCreateBlock()
+    {
+        for (;;)
+        {
+            for (int ti = 0; ti < CMap.Raw; ti++)
+            {
+                for (int tj = 0; tj < CMap.Col; tj++)
+                {
+                    if (Map.MapArray[tj, ti] == CMap.Kind.None)
+                    {
+                        CBlock tBlock = null;
+                        Vector2 tVec = new Vector2((float)tj / 2 - 2, (float)ti / 2 - 2);
+
+                        int tRandom = 0;
+                        tRandom = Random.Range(2, 7);
+                        CMap.Kind tCurrentBlock = (CMap.Kind)tRandom;
+
+                        Map.MapArray[tj, ti] = tCurrentBlock;
+                        CMap.Kind tRawBlock = tCurrentBlock;
+
+
+                        if (tj >= 3)
+                        {
+                            if (Map.MapArray[tj, ti] == Map.MapArray[tj - 1, ti] && Map.MapArray[tj, ti] == Map.MapArray[tj - 2, ti])
+                            {
+                                do
+                                {
+                                    tRandom = Random.Range(2, 6);
+                                }
+                                while (tCurrentBlock == (CMap.Kind)tRandom);
+
+                                tCurrentBlock = (CMap.Kind)tRandom;
+                                Map.MapArray[tj, ti] = tCurrentBlock;
+                                tRawBlock = tCurrentBlock;
+                            }
+                        }
+                        if (ti >= 3)
+                        {
+                            if (Map.MapArray[tj, ti] == Map.MapArray[tj, ti - 1] && Map.MapArray[tj, ti] == Map.MapArray[tj, ti - 2])
+                            {
+                                do
+                                {
+                                    tRandom = Random.Range(2, 6);
+                                }
+                                while (tCurrentBlock == (CMap.Kind)tRandom && tRawBlock == (CMap.Kind)tRandom);
+
+                                tCurrentBlock = (CMap.Kind)tRandom;
+                                Map.MapArray[tj, ti] = tCurrentBlock;
+                            }
+                        }
+
+
+                        tBlock = GameObject.Instantiate(Map.BlockLoader.GetPrefab(Map.MapArray[tj, ti]), tVec, Quaternion.identity);
+                        tBlock.transform.SetParent(this.transform);
+                        Map.BlockArray[tj, ti] = tBlock;
+                        Map.BlockArray[tj, ti].SetScene(this);
+                        tBlock.BlockCoordinate.X = tj;
+                        tBlock.BlockCoordinate.Y = ti;
+                        Map.VecArray[tj, ti] = tVec;
+                    }
+                }
+            }
+
+            yield return new WaitForSeconds(1.0f);
+        }
+    }
+
+
     [Button]
     public void Asd()
     {
@@ -155,7 +242,9 @@ public class CScenePlayGame : MonoBehaviour {
         {
             for (int tj = 0; tj < 9; tj++)
             {
-                Debug.Log("(" + tj + "," + ti + ")" + "=" + Map.BlockArray[tj, ti]);
+                //Debug.Log("(" + tj + "," + ti + ")" + "=" + Map.BlockArray[tj, ti]);
+                Debug.Log("(" + tj + "," + ti + ")" + "=" + Map.MapArray[tj, ti]);
+
             }
         }
     }

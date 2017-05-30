@@ -23,9 +23,10 @@ public class CMap : MonoBehaviour {
     public CBlock[,] BlockArray = null;
     public Vector2[,] VecArray = null;
     public CBlockLoader BlockLoader = null;
+    public Transform Parent = null; 
 
 
-    public void CreateMap(Transform tParent)
+    public void CreateMap()
     {
         BlockLoader = new CBlockLoader();
         BlockLoader.Load();
@@ -56,7 +57,7 @@ public class CMap : MonoBehaviour {
                 if (MapArray[tj, ti] == Kind.Wall)
                 {
                     tBlock = GameObject.Instantiate(BlockLoader.GetPrefab(Kind.Wall), tVec, Quaternion.identity);
-                    tBlock.transform.SetParent(tParent);
+                    tBlock.transform.SetParent(Parent);
                     BlockArray[tj, ti] = tBlock;
                     tBlock.BlockCoordinate.X = tj;
                     tBlock.BlockCoordinate.Y = ti;
@@ -104,7 +105,7 @@ public class CMap : MonoBehaviour {
 
 
                     tBlock = GameObject.Instantiate(BlockLoader.GetPrefab(MapArray[tj, ti]), tVec, Quaternion.identity);
-                    tBlock.transform.SetParent(tParent);
+                    tBlock.transform.SetParent(Parent);
                     BlockArray[tj, ti] = tBlock;
                     tBlock.BlockCoordinate.X = tj;
                     tBlock.BlockCoordinate.Y = ti;
@@ -118,22 +119,39 @@ public class CMap : MonoBehaviour {
 
     public void BlockNullCheck()
     {
-        foreach (var ti in BlockArray)
+        foreach (var tBlock in BlockArray)
         {
-            if (ti == null)
+            if (tBlock == null)
             {
-                var tX = ti.BlockCoordinate.X;
-                var tY = ti.BlockCoordinate.Y;
+                var tX = tBlock.BlockCoordinate.X;
+                var tY = tBlock.BlockCoordinate.Y;
                 int tN = 0;
 
                 while ((tY + tN + 1) < 8)
                 {
                     BlockArray[tX, tY + tN + 1].transform.DOMove(VecArray[tX, tY + tN], 0.5f);
+                    BlockArray[tX, tY + tN] = BlockArray[tX, tY + tN + 1];
+                    BlockArray[tX, tY + tN].BlockCoordinate.X = tX;
+                    BlockArray[tX, tY + tN].BlockCoordinate.Y = tY + tN;
+                    MapArray[tX, tY + tN] = MapArray[tX, tY + tN + 1];
                     tN++;
                 }
+                MapArray[tX, tY + tN] = Kind.None;
                 //Debug.Log("Null X:" + tX + "Y: " + tY);
             }
+
         }
+    }
+
+
+
+  
+
+
+
+    public void SetParent(Transform tParent)
+    {
+        Parent = tParent;
     }
 
 }
