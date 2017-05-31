@@ -34,9 +34,12 @@ public class CNormalBlcok : CBlock {
     private void OnMouseDown()
     {
         Debug.Log("나는야" + "X:" + BlockCoordinate.X + "Y:" + BlockCoordinate.Y);
-        IsClick = true;
-        OnClickVec = Input.mousePosition;
-        ScenePlayGeme.SetSwapBlock(this);
+        if (this.Kind != CMap.Kind.Wall)
+        {
+            IsClick = true;
+            OnClickVec = Input.mousePosition;
+            ScenePlayGeme.SetSwapBlock(this);
+        }
     }
 
     private void OnMouseDrag()
@@ -52,43 +55,47 @@ public class CNormalBlcok : CBlock {
 
     private void OnMouseUp()
     {
-        if (MoveVec.x < 0 && MoveVec.y >= -45 && MoveVec.y <= 45)
+        if(this.Kind != CMap.Kind.Wall)
         {
-            BlockMove = Move.Left;
-            MoveVec = Vector2.left;
-            Debug.Log("Left");
-            
+            if (MoveVec.x < 0 && MoveVec.y >= -45 && MoveVec.y <= 45)
+            {
+                BlockMove = Move.Left;
+                MoveVec = Vector2.left;
+                Debug.Log("Left");
+            }
+            else if (MoveVec.x > 0 && MoveVec.y >= -45 && MoveVec.y <= 45)
+            {
+                BlockMove = Move.Right;
+                MoveVec = Vector2.right;
+                Debug.Log("Right");
+
+            }
+            else if (MoveVec.y > 0 && MoveVec.x >= -45 && MoveVec.x <= 45)
+            {
+                BlockMove = Move.Up;
+                MoveVec = Vector2.up;
+                Debug.Log("Up");
+            }
+            else if (MoveVec.y < 0 && MoveVec.x >= -45 && MoveVec.x <= 45)
+            {
+                BlockMove = Move.Down;
+                MoveVec = Vector2.down;
+                Debug.Log("Down");
+            }
+
+
+            ScenePlayGeme.SetSwapPos(BlockMove);
+            ScenePlayGeme.SetMoveVec(MoveVec);
+            //ScenePlayGeme.DoSwap(MoveVec);
+            //ReSetMove();
+
+            IsClick = false;
+
+            //MoveVec = Vector2.zero;
+            //ScenePlayGeme.SetMoveVec(MoveVec);
 
         }
-        else if (MoveVec.x > 0 && MoveVec.y >= -45 && MoveVec.y <= 45)
-        {
-            BlockMove = Move.Right;
-            MoveVec = Vector2.right;
-            Debug.Log("Right");
 
-        }
-        else if (MoveVec.y > 0 && MoveVec.x >= -45 && MoveVec.x <= 45)
-        {
-            BlockMove = Move.Up;
-            MoveVec = Vector2.up;
-            Debug.Log("Up");
-        }
-        else if (MoveVec.y < 0 && MoveVec.x >= -45 && MoveVec.x <= 45)
-        {
-            BlockMove = Move.Down;
-            MoveVec = Vector2.down;
-            Debug.Log("Down");
-        }
-
-       
-        ScenePlayGeme.SetSwapPos(BlockMove);
-        ScenePlayGeme.DoSwap(MoveVec);
-        //ReSetMove();
-        
-        IsClick = false;
-        
-
-        MoveVec = Vector2.zero;
 
     }
 

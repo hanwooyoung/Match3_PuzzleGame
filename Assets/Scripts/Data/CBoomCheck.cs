@@ -11,9 +11,11 @@ public class CBoomCheck : MonoBehaviour {
 
     public Stack<CBlock> BoomBlockList = new Stack<CBlock>();
 
-    public int LeftBoomNumber = 0;
+    //public int LeftBoomNumber = 0;
+    //public int RightBoomNumber = 0;
 
-    private bool mIsBoomCheck = false;
+
+    private bool mIsBoomCheck = true;
     public bool IsBoomCheck
     {
         get
@@ -29,57 +31,116 @@ public class CBoomCheck : MonoBehaviour {
 
     public void LeftBoom()
     {
-        bool tIsResult = true;
-        int LeftBoomCount = 0;
-
-        if (SeletBlock.BlockCoordinate.X - LeftBoomNumber > 0)
+        if (SeletBlock.BlockCoordinate.X - 2 > 0)
         {
-            while (tIsResult)
+            if (SeletBlockKind == BlockArray[SeletBlock.BlockCoordinate.X - 1, SeletBlock.BlockCoordinate.Y].Kind &&
+                SeletBlockKind == BlockArray[SeletBlock.BlockCoordinate.X - 2, SeletBlock.BlockCoordinate.Y].Kind)
             {
-                //Debug.Log("asdX" + (SeletBlock.BlockCoordinate.X - LeftBoomNumber) + "asdY" + SeletBlock.BlockCoordinate.Y);
-                //Debug.Log(BlockArray[SeletBlock.BlockCoordinate.X - LeftBoomNumber, SeletBlock.BlockCoordinate.Y].Kind);
-
-                if (SeletBlockKind == BlockArray[SeletBlock.BlockCoordinate.X - LeftBoomNumber, SeletBlock.BlockCoordinate.Y].Kind)
+                Debug.Log("Left");
+                for (int ti = 0; SeletBlock.BlockCoordinate.X - ti > 0; ti++)
                 {
-                    //foreach (var tBlock in BoomBlockList)
-                    //{
-                        if (BoomBlockList.Contains(BlockArray[SeletBlock.BlockCoordinate.X - LeftBoomNumber, SeletBlock.BlockCoordinate.Y]) == false)
+                    if (BoomBlockList.Contains(BlockArray[SeletBlock.BlockCoordinate.X - ti, SeletBlock.BlockCoordinate.Y]) == false && ti < 3)
+                    {
+                        BoomBlockList.Push(BlockArray[SeletBlock.BlockCoordinate.X - ti, SeletBlock.BlockCoordinate.Y]);
+                    }
+                    if (SeletBlockKind == BlockArray[SeletBlock.BlockCoordinate.X - ti, SeletBlock.BlockCoordinate.Y].Kind && ti >= 3)
+                    {
+                        if (BoomBlockList.Contains(BlockArray[SeletBlock.BlockCoordinate.X - ti, SeletBlock.BlockCoordinate.Y]) == false)
                         {
-                            BoomBlockList.Push(BlockArray[SeletBlock.BlockCoordinate.X - LeftBoomNumber, SeletBlock.BlockCoordinate.Y]);
-                            LeftBoomCount++;
+                            BoomBlockList.Push(BlockArray[SeletBlock.BlockCoordinate.X - ti, SeletBlock.BlockCoordinate.Y]);
                         }
-                    //}
+                    }
+                    else if (SeletBlockKind != BlockArray[SeletBlock.BlockCoordinate.X - ti, SeletBlock.BlockCoordinate.Y].Kind)
+                    {
+                        break;
+                    }
                 }
-                else
-                {
-                    tIsResult = false;
-                }
-
-                if (SeletBlock.BlockCoordinate.X - LeftBoomNumber > 0)
-                {
-                    //tIsResult = true;
-                    LeftBoomNumber++;
-                }
-                else
-                {
-                    tIsResult = false;
-                }
-
-
             }
-            
         }
-        if(LeftBoomCount <= 2)
-        {
-            IsBoomCheck = false;
-            BoomBlockList.Clear();
-        }
-        else
-        {
-            IsBoomCheck = true;
-        }
-        LeftBoomCount = 0;
     }
+
+
+    public void RightBoom()
+    {
+        
+        if (SeletBlock.BlockCoordinate.X + 2 < CMap.Col)
+        {
+            if (SeletBlockKind == BlockArray[SeletBlock.BlockCoordinate.X + 1, SeletBlock.BlockCoordinate.Y].Kind &&
+                SeletBlockKind == BlockArray[SeletBlock.BlockCoordinate.X + 2, SeletBlock.BlockCoordinate.Y].Kind)
+            {
+                Debug.Log("Right");
+
+                for (int ti = 0; SeletBlock.BlockCoordinate.X + ti < CMap.Col; ti++)
+                {
+                    if (BoomBlockList.Contains(BlockArray[SeletBlock.BlockCoordinate.X + ti, SeletBlock.BlockCoordinate.Y]) == false && ti < 3)
+                    {
+                        BoomBlockList.Push(BlockArray[SeletBlock.BlockCoordinate.X + ti, SeletBlock.BlockCoordinate.Y]);
+                    }
+                    if (SeletBlockKind == BlockArray[SeletBlock.BlockCoordinate.X + ti, SeletBlock.BlockCoordinate.Y].Kind && ti >= 3)
+                    {
+                        if (BoomBlockList.Contains(BlockArray[SeletBlock.BlockCoordinate.X + ti, SeletBlock.BlockCoordinate.Y]) == false)
+                        {
+                            BoomBlockList.Push(BlockArray[SeletBlock.BlockCoordinate.X + ti, SeletBlock.BlockCoordinate.Y]);
+                        }
+                    }
+                    else if(SeletBlockKind != BlockArray[SeletBlock.BlockCoordinate.X + ti, SeletBlock.BlockCoordinate.Y].Kind)
+                    {
+                        break;
+                    }
+                }
+            }
+        }
+
+    }
+
+
+    public void SideXBoom()
+    {
+
+        if (SeletBlock.BlockCoordinate.X + 1 < CMap.Col && SeletBlock.BlockCoordinate.X - 1 > 0)
+        {
+            if (SeletBlockKind == BlockArray[SeletBlock.BlockCoordinate.X + 1, SeletBlock.BlockCoordinate.Y].Kind &&
+                SeletBlockKind == BlockArray[SeletBlock.BlockCoordinate.X - 1, SeletBlock.BlockCoordinate.Y].Kind)
+            {
+                Debug.Log("Side");
+
+                int tNumber = 0;
+
+                for (int ti = 0; SeletBlock.BlockCoordinate.X + tNumber  < CMap.Col; ti++)
+                {                   
+                    int tMinus = 1;
+                    if (ti % 2 == 0)
+                    {
+                        tMinus *= -1;
+                    }
+
+                    if (BoomBlockList.Contains(BlockArray[SeletBlock.BlockCoordinate.X + (tNumber * tMinus), SeletBlock.BlockCoordinate.Y]) == false && ti < 3)
+                    {
+                        BoomBlockList.Push(BlockArray[SeletBlock.BlockCoordinate.X + (tNumber * tMinus), SeletBlock.BlockCoordinate.Y]);
+                    }
+                    if (SeletBlockKind == BlockArray[SeletBlock.BlockCoordinate.X + (tNumber * tMinus), SeletBlock.BlockCoordinate.Y].Kind && ti >= 3 && SeletBlock.BlockCoordinate.X - tNumber >0)
+                    {
+                        if (BoomBlockList.Contains(BlockArray[SeletBlock.BlockCoordinate.X + (tNumber * tMinus), SeletBlock.BlockCoordinate.Y]) == false)
+                        {
+                            BoomBlockList.Push(BlockArray[SeletBlock.BlockCoordinate.X + (tNumber * tMinus), SeletBlock.BlockCoordinate.Y]);
+                        }
+                    }
+                    else if (SeletBlockKind != BlockArray[SeletBlock.BlockCoordinate.X + (tNumber * tMinus), SeletBlock.BlockCoordinate.Y].Kind)
+                    {
+                        break;
+                    }
+
+                    if (ti % 2 == 0 || ti == 0)
+                    {
+                        tNumber++;
+                    }
+                }
+            }
+        }
+
+    }
+
+
 
     public void SetBlockArray(CBlock[,] tBlockArray)
     {
@@ -90,6 +151,10 @@ public class CBoomCheck : MonoBehaviour {
     {
         SeletBlock = tSeletBlock;
         SeletBlockKind = SeletBlock.Kind;
+        if(SeletBlockKind == CMap.Kind.Wall)
+        {
+            SeletBlockKind = CMap.Kind.None;
+        }
     }
     
     public void Stack()
