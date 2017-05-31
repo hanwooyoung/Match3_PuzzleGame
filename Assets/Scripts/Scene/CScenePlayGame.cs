@@ -16,6 +16,8 @@ public class CScenePlayGame : MonoBehaviour {
     public CBoomCheck BoomCheck = null;
 
     public CPossibleBoomCheck PossibleBoomCheck = null;
+    
+    public bool IsBlockBoom = false;
 
     private void Awake()
     {
@@ -125,17 +127,20 @@ public class CScenePlayGame : MonoBehaviour {
                     tBlock.ReSetMove();
                 }
             }
-            Invoke("InvokeUnSwap", 0.3f);
+            //Invoke("InvokeUnSwap", 0.1f);
 
         }
     }
 
     public void InvokeUnSwap()
     {
-        if (BoomCheck.IsBoomCheck == false)
+        if (BoomCheck.IsBoomCheck == false && IsBlockBoom == false)
         {
-            //Invoke("UnSwap", 0.2f);
-            UnSwap();
+            Invoke("UnSwap", 0.05f);
+        }
+        if(IsBlockBoom == true)
+        {
+            IsBlockBoom = false;
         }
     }
 
@@ -197,7 +202,8 @@ public class CScenePlayGame : MonoBehaviour {
 
                     //BoomCheck.RightBoom();
                     //BoomCheck.LeftBoom();
-                    BoomCheck.SideXBoom();
+                    //BoomCheck.SideXBoom();
+                    BoomCheck.UpBoom();
                     tBlock.ReSetMove();
                 }
             }
@@ -207,7 +213,7 @@ public class CScenePlayGame : MonoBehaviour {
             }
             BoomCheck.Stack();
             BlockDestroy();
-            Invoke("ReCreateBlock", 1.0f);
+            Invoke("ReCreateBlock", 2.0f);
             yield return new WaitForSeconds(0.1f);
         }
     }
@@ -296,7 +302,6 @@ public class CScenePlayGame : MonoBehaviour {
     [Button]
     public void BlockDestroy()
     {
-
         if (BoomCheck.BoomBlockList.Count > 0)
         {
             foreach (var tj in BoomCheck.BoomBlockList)
@@ -306,17 +311,16 @@ public class CScenePlayGame : MonoBehaviour {
                     if (ti == tj && ti.Kind != CMap.Kind.Wall)
                     {
                         ti.BlockDestroy();
+                        IsBlockBoom = true;
                     }
                 }
             }
         }
-        //else
-        //{
-        //    BoomCheck.IsBoomCheck = false;
-        //}
+        else
+        {
+            BoomCheck.IsBoomCheck = false;
+        }
         BoomCheck.BoomBlockList.Clear();
-        //BoomCheck.LeftBoomNumber = 0;
-        //BoomCheck.RightBoomNumber = 0;
     }
 
 

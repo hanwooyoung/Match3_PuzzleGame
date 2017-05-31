@@ -126,14 +126,22 @@ public class CMap : MonoBehaviour {
                 var tX = tBlock.BlockCoordinate.X;
                 var tY = tBlock.BlockCoordinate.Y;
                 int tN = 0;
-
+                int tDownCount = 0;
                 while ((tY + tN + 1) < 8)
                 {
-                    BlockArray[tX, tY + tN + 1].transform.DOMove(VecArray[tX, tY + tN], 0.5f);
-                    BlockArray[tX, tY + tN] = BlockArray[tX, tY + tN + 1];
-                    BlockArray[tX, tY + tN].BlockCoordinate.X = tX;
-                    BlockArray[tX, tY + tN].BlockCoordinate.Y = tY + tN;
-                    MapArray[tX, tY + tN] = MapArray[tX, tY + tN + 1];
+                    if(BlockArray[tX, tY + tN + 1] != null)
+                    {
+                        
+                        BlockArray[tX, tY + tN + 1].transform.DOMove(VecArray[tX, tY + tN - tDownCount], 0.5f);
+                        BlockArray[tX, tY + tN - tDownCount] = BlockArray[tX, tY + tN + 1];
+                        BlockArray[tX, tY + tN - tDownCount].BlockCoordinate.X = tX;
+                        BlockArray[tX, tY + tN - tDownCount].BlockCoordinate.Y = tY + tN - tDownCount;
+                        MapArray[tX, tY + tN - tDownCount] = MapArray[tX, tY + tN + 1];
+                    }
+                    else
+                    {
+                        tDownCount++;
+                    }         
                     tN++;
                 }
                 MapArray[tX, tY + tN] = Kind.None;
