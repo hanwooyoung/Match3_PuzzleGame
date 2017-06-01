@@ -23,8 +23,19 @@ public class CMap : MonoBehaviour {
     public CBlock[,] BlockArray = null;
     public Vector2[,] VecArray = null;
     public CBlockLoader BlockLoader = null;
-    public Transform Parent = null; 
-
+    public Transform Parent = null;
+    private bool mMapIsNull = false;
+    public bool MapIsNull
+    {
+        get
+        {
+            return mMapIsNull;
+        }
+        set
+        {
+            mMapIsNull = value;
+        }
+    }
 
     public void CreateMap()
     {
@@ -132,7 +143,8 @@ public class CMap : MonoBehaviour {
                 {
                     if (BlockArray[ti, tj] == null)
                     {
-                        Debug.Log(BlockArray[ti, tj] + " ti " + ti + " tj " + tj);
+                        MapIsNull = true;
+                        //Debug.Log(BlockArray[ti, tj] + " ti " + ti + " tj " + tj);
                         for (int tk = 1; tk + tj < Raw-1; tk++)
                         {
                             if (BlockArray[ti, tj + tk] != null)
@@ -141,7 +153,7 @@ public class CMap : MonoBehaviour {
                                 BlockArray[ti, tj + tDownCount] = BlockArray[ti, tj + tk];
                                 BlockArray[ti, tj + tk] = null;
                                 BlockArray[ti, tj + tDownCount].BlockCoordinate.X = ti;
-                                Debug.Log(tj + tk);
+                                //Debug.Log(tj + tk);
                                 BlockArray[ti, tj + tDownCount].BlockCoordinate.Y = tj + tDownCount;
                                 MapArray[ti, tj + tDownCount] = MapArray[ti, tj + tk];
                                 MapArray[ti, tj + tk] = Kind.None;
@@ -152,6 +164,10 @@ public class CMap : MonoBehaviour {
                         //ti++;
                         tDownCount = 0;
                         break;
+                    }
+                    else
+                    {
+                        MapIsNull = false;
                     }
 
                     //if(BlockArray[tj,ti] == null)

@@ -34,11 +34,13 @@ public class CNormalBlcok : CBlock {
     private void OnMouseDown()
     {
         Debug.Log("나는야" + "X:" + BlockCoordinate.X + "Y:" + BlockCoordinate.Y);
-        if (this.Kind != CMap.Kind.Wall)
+        if (this.Kind != CMap.Kind.Wall )
         {
             IsClick = true;
             OnClickVec = Input.mousePosition;
-            ScenePlayGeme.SetSwapBlock(this);
+            //OnClickVec = new Vector2(this.transform.position.x, this.transform.position.y);
+            if (ScenePlayGeme.IsDontMove == false)
+                ScenePlayGeme.SetSelectBlock(this);
         }
     }
 
@@ -47,8 +49,8 @@ public class CNormalBlcok : CBlock {
         if (true == Input.GetMouseButton(0))
         {
             OnDragVec = Input.mousePosition;
-
-            MoveVec = OnDragVec - OnClickVec;
+            if (ScenePlayGeme.IsDontMove == false)
+                MoveVec = OnDragVec - OnClickVec;
 
         }
     }
@@ -61,31 +63,33 @@ public class CNormalBlcok : CBlock {
             {
                 BlockMove = Move.Left;
                 MoveVec = Vector2.left;
-                Debug.Log("Left");
+                //Debug.Log("Left");
             }
             else if (MoveVec.x > 0 && MoveVec.y >= -45 && MoveVec.y <= 45)
             {
                 BlockMove = Move.Right;
                 MoveVec = Vector2.right;
-                Debug.Log("Right");
+                //Debug.Log("Right");
 
             }
             else if (MoveVec.y > 0 && MoveVec.x >= -45 && MoveVec.x <= 45)
             {
                 BlockMove = Move.Up;
                 MoveVec = Vector2.up;
-                Debug.Log("Up");
+                //Debug.Log("Up");
             }
             else if (MoveVec.y < 0 && MoveVec.x >= -45 && MoveVec.x <= 45)
             {
                 BlockMove = Move.Down;
                 MoveVec = Vector2.down;
-                Debug.Log("Down");
+                //Debug.Log("Down");
             }
 
-
-            ScenePlayGeme.SetSwapPos(BlockMove);
-            ScenePlayGeme.SetMoveVec(MoveVec);
+            if (ScenePlayGeme.IsDontMove == false)
+            {
+                ScenePlayGeme.SetSwapPos(BlockMove);
+                ScenePlayGeme.SetMoveVec(MoveVec);
+            }
             //ScenePlayGeme.DoSwap(MoveVec);
             //ReSetMove();
 
