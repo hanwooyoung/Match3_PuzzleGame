@@ -143,7 +143,7 @@ public class CBoomCheck : MonoBehaviour {
 
     public void UpBoom()
     {
-        if (SeletBlock.BlockCoordinate.Y + 2 < CMap.Col)
+        if (SeletBlock.BlockCoordinate.Y + 2 < CMap.Col && SeletBlockKind != CMap.Kind.None)
         {
             if (SeletBlockKind == BlockArray[SeletBlock.BlockCoordinate.X, SeletBlock.BlockCoordinate.Y + 1].Kind &&
                 SeletBlockKind == BlockArray[SeletBlock.BlockCoordinate.X, SeletBlock.BlockCoordinate.Y + 2].Kind)
@@ -192,9 +192,12 @@ public class CBoomCheck : MonoBehaviour {
     {
         foreach (var ti in BoomBlockList)
         {
-            Debug.Log("Stack = X: "+ti.BlockCoordinate.X +",Y: " + ti.BlockCoordinate.Y);          
+            Debug.Log(ti + "Stack = X: "+ti.BlockCoordinate.X +",Y: " + ti.BlockCoordinate.Y);          
         }
     }
 
-
+    public void BoomBlockListClear()
+    {
+        BoomBlockList.Clear();
+    }
 }

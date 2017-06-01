@@ -45,15 +45,16 @@ public class CScenePlayGame : MonoBehaviour {
                 Map.BlockArray[ti, tj].SetScene(this);
             }
         }
+
+        StartCoroutine(Map.BlockNullCheck());
     }
 
     // Update is called once per frame
     void Update()
     {
-        Map.BlockNullCheck();
-        
+
         PossibleBoomCheck.SetMapArray(Map.MapArray);
-        if(MoveVec != Vector2.zero)
+        //if(MoveVec != Vector2.zero)
             DoSwap(MoveVec);
         //IsCheckUpDate();
         //if (BoomCheck.IsBoomCheck == false)
@@ -127,7 +128,7 @@ public class CScenePlayGame : MonoBehaviour {
                     tBlock.ReSetMove();
                 }
             }
-            //Invoke("InvokeUnSwap", 0.1f);
+            Invoke("InvokeUnSwap", 0.2f);
 
         }
     }
@@ -192,17 +193,19 @@ public class CScenePlayGame : MonoBehaviour {
     {
         for (;;)
         {
+
             BoomCheck.SetBlockArray(Map.BlockArray);
             foreach (CBlock tBlock in Map.BlockArray)
             {
 
-                if (SeletBlock == tBlock )
+                if (null != tBlock && (SeletBlock == tBlock && tBlock.Kind != CMap.Kind.None && tBlock.Kind != CMap.Kind.Wall))
                 {
+                    
                     BoomCheck.SetSeletBlock(tBlock);
 
-                    //BoomCheck.RightBoom();
-                    //BoomCheck.LeftBoom();
-                    //BoomCheck.SideXBoom();
+                    BoomCheck.RightBoom();
+                    BoomCheck.LeftBoom();
+                    BoomCheck.SideXBoom();
                     BoomCheck.UpBoom();
                     tBlock.ReSetMove();
                 }
@@ -212,9 +215,11 @@ public class CScenePlayGame : MonoBehaviour {
                 BoomCheck.IsBoomCheck = true;
             }
             BoomCheck.Stack();
+            //Debug.Log("count"+BoomCheck.BoomBlockList.Count);
             BlockDestroy();
+
             Invoke("ReCreateBlock", 2.0f);
-            yield return new WaitForSeconds(0.1f);
+            yield return new WaitForSeconds(0.2f);
         }
     }
 
@@ -232,6 +237,7 @@ public class CScenePlayGame : MonoBehaviour {
                     {
                         CBlock tBlock = null;
                         Vector2 tVec = new Vector2((float)tj / 2 - 2, (float)ti / 2 - 2);
+                        Vector2 tCreateVec = new Vector2(tVec.x, tVec.y+2.0f);
 
                         int tRandom = 0;
                         tRandom = Random.Range(2, 7);
@@ -272,13 +278,14 @@ public class CScenePlayGame : MonoBehaviour {
                         }
 
 
-                        tBlock = GameObject.Instantiate(Map.BlockLoader.GetPrefab(Map.MapArray[tj, ti]), tVec, Quaternion.identity);
+                        tBlock = GameObject.Instantiate(Map.BlockLoader.GetPrefab(Map.MapArray[tj, ti]), tCreateVec, Quaternion.identity);
+                        tBlock.transform.DOMove(tVec, 0.25f);
                         tBlock.transform.SetParent(this.transform);
                         Map.BlockArray[tj, ti] = tBlock;
                         Map.BlockArray[tj, ti].SetScene(this);
                         tBlock.BlockCoordinate.X = tj;
                         tBlock.BlockCoordinate.Y = ti;
-                        Map.VecArray[tj, ti] = tVec;
+                        //Map.VecArray[tj, ti] = tVec;
                     }
                 }
             }
@@ -297,32 +304,74 @@ public class CScenePlayGame : MonoBehaviour {
     [Button]
     public void zxc()
     {
-        Debug.Log(BoomCheck.IsBoomCheck);
+        Debug.Log(SeletBlock);
     }
     [Button]
     public void BlockDestroy()
     {
         if (BoomCheck.BoomBlockList.Count > 0)
         {
-            foreach (var tj in BoomCheck.BoomBlockList)
+            while(BoomCheck.BoomBlockList.Count > 0)
             {
-                foreach (var ti in Map.BlockArray)
+                CBlock tBlock = null;
+                tBlock = BoomCheck.BoomBlockList.Pop();
+
+                for (int ti = 0; ti < CMap.Raw; ti++)
                 {
-                    if (ti == tj && ti.Kind != CMap.Kind.Wall)
+                    for (int tj = 0; tj < CMap.Col; tj++)
                     {
-                        ti.BlockDestroy();
-                        IsBlockBoom = true;
+                        if (tBlock == Map.BlockArray[tj, ti] && Map.BlockArray[tj, ti].Kind != CMap.Kind.Wall)
+                        {
+
+                            Map.BlockArray[tj, ti].BlockDestroy();
+                            Map.MapArray[tj, ti] = CMap.Kind.None;
+                            //IsBlockBoom = true;
+                        }
                     }
                 }
             }
+            
+
+            //foreach (var tBlock in BoomCheck.BoomBlockList)
+            //{
+            //    //foreach (var ti in Map.BlockArray)
+            //    //{
+            //    //    if (ti == tj && ti.Kind != CMap.Kind.Wall)
+            //    //    {
+            //    //        ti.BlockDestroy();
+            //    //        IsBlockBoom = true;
+            //    //    }
+            //    //}
+            //for (int ti = 0; ti < CMap.Raw; ti++)
+            //{
+            //    for (int tj = 0; tj < CMap.Col; tj++)
+            //    {
+            //        if (tBlock == Map.BlockArray[tj, ti] && Map.BlockArray[tj, ti].Kind != CMap.Kind.Wall)
+            //        {
+
+            //            Map.BlockArray[tj, ti].BlockDestroy();
+            //            Map.BlockArray[tj, ti] = null;
+            //            Map.MapArray[tj, ti] = CMap.Kind.None;
+            //            IsBlockBoom = true;
+            //        }
+            //    }
+            //}
+            //}
         }
         else
         {
             BoomCheck.IsBoomCheck = false;
         }
-        BoomCheck.BoomBlockList.Clear();
+
+        //SeletBlock = null;
     }
 
+    [Button]
+    public void BoomBlockListClear()
+    {
+        BoomCheck.BoomBlockList.Clear();
+        Debug.Log("Clear");
+    }
 
     [Button]
     public void Array()
@@ -331,8 +380,8 @@ public class CScenePlayGame : MonoBehaviour {
         {
             for (int tj = 0; tj < 9; tj++)
             {
-                //Debug.Log("(" + tj + "," + ti + ")" + "=" + Map.BlockArray[tj, ti]);
-                Debug.Log("(" + tj + "," + ti + ")" + "=" + Map.MapArray[tj, ti]);
+                Debug.Log("블록: (" + tj + "," + ti + ")" + "=" + Map.BlockArray[tj, ti]);
+                Debug.Log("타입: (" + tj + "," + ti + ")" + "=" + Map.MapArray[tj, ti]);
 
             }
         }

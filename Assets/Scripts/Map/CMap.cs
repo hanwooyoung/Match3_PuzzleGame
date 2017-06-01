@@ -116,39 +116,98 @@ public class CMap : MonoBehaviour {
         }
     }
 
-
-    public void BlockNullCheck()
+    /// <summary>
+    /// 빈곳을 찾아 블록을 아래로 정렬 해주는 함수
+    /// </summary>
+    /// <returns></returns>
+    public IEnumerator BlockNullCheck()
     {
-        foreach (var tBlock in BlockArray)
+        for(;;)
         {
-            if (tBlock == null)
+            int ti = 0;
+            int tDownCount = 0;
+            for (ti = 1; ti < Col; ti++)
             {
-                var tX = tBlock.BlockCoordinate.X;
-                var tY = tBlock.BlockCoordinate.Y;
-                int tN = 0;
-                int tDownCount = 0;
-                while ((tY + tN + 1) < 8)
+                for (int tj = 1; tj < Raw-1; tj++)
                 {
-                    if(BlockArray[tX, tY + tN + 1] != null)
+                    if (BlockArray[ti, tj] == null)
                     {
-                        
-                        BlockArray[tX, tY + tN + 1].transform.DOMove(VecArray[tX, tY + tN - tDownCount], 0.5f);
-                        BlockArray[tX, tY + tN - tDownCount] = BlockArray[tX, tY + tN + 1];
-                        BlockArray[tX, tY + tN - tDownCount].BlockCoordinate.X = tX;
-                        BlockArray[tX, tY + tN - tDownCount].BlockCoordinate.Y = tY + tN - tDownCount;
-                        MapArray[tX, tY + tN - tDownCount] = MapArray[tX, tY + tN + 1];
+                        Debug.Log(BlockArray[ti, tj] + " ti " + ti + " tj " + tj);
+                        for (int tk = 1; tk + tj < Raw-1; tk++)
+                        {
+                            if (BlockArray[ti, tj + tk] != null)
+                            {
+                                BlockArray[ti, tj + tk].transform.DOMove(VecArray[ti, tj + tDownCount], 0.3f);
+                                BlockArray[ti, tj + tDownCount] = BlockArray[ti, tj + tk];
+                                BlockArray[ti, tj + tk] = null;
+                                BlockArray[ti, tj + tDownCount].BlockCoordinate.X = ti;
+                                Debug.Log(tj + tk);
+                                BlockArray[ti, tj + tDownCount].BlockCoordinate.Y = tj + tDownCount;
+                                MapArray[ti, tj + tDownCount] = MapArray[ti, tj + tk];
+                                MapArray[ti, tj + tk] = Kind.None;
+                                tDownCount++;
+                            }
+
+                        }
+                        //ti++;
+                        tDownCount = 0;
+                        break;
                     }
-                    else
-                    {
-                        tDownCount++;
-                    }         
-                    tN++;
+
+                    //if(BlockArray[tj,ti] == null)
+                    //{
+                    //    for(int tk = 1;tk+ti < Raw;tk++)
+                    //    {
+                    //        if(BlockArray[tj, ti+tk] != null)
+                    //        {
+                    //            BlockArray[tj, ti + tk].transform.DOMove(VecArray[tj, ti + tDownCount], 0.5f);
+                    //            BlockArray[tj, ti+ tDownCount] = BlockArray[tj, ti + tk];
+                    //            BlockArray[tj, ti+ tDownCount].BlockCoordinate.X = tj;
+                    //            BlockArray[tj, ti+ tDownCount].BlockCoordinate.Y = ti;
+                    //            MapArray[tj, ti+ tDownCount] = MapArray[tj, ti + tk];
+                    //            tDownCount++;
+                    //        }
+
+                    //    }
+                    //}
+
                 }
-                MapArray[tX, tY + tN] = Kind.None;
-                //Debug.Log("Null X:" + tX + "Y: " + tY);
             }
 
+            yield return new WaitForSeconds(0.0f);
         }
+       
+
+        //foreach (var tBlock in BlockArray)
+        //{
+        //    if (tBlock == null)
+        //    {
+        //        var tX = tBlock.BlockCoordinate.X;
+        //        var tY = tBlock.BlockCoordinate.Y;
+        //        int tN = 0;
+        //        int tDownCount = 0;
+        //        while (BlockArray[tX, tY + tN+1].Kind != Kind.Wall)
+        //        {
+        //            if(BlockArray[tX, tY + tN + 1] != null && (tY + tN + 1) < 8)
+        //            {
+                        
+        //                BlockArray[tX, tY + tN + 1].transform.DOMove(VecArray[tX, tY + tN - tDownCount], 0.5f);
+        //                BlockArray[tX, tY + tN - tDownCount] = BlockArray[tX, tY + tN + 1];
+        //                BlockArray[tX, tY + tN - tDownCount].BlockCoordinate.X = tX;
+        //                BlockArray[tX, tY + tN - tDownCount].BlockCoordinate.Y = tY + tN - tDownCount;
+        //                MapArray[tX, tY + tN - tDownCount] = MapArray[tX, tY + tN + 1];
+        //            }
+        //            else
+        //            {
+        //                tDownCount++;
+        //            }         
+        //            tN++;
+        //        }
+        //        MapArray[tX, tY + tN] = Kind.None;
+        //        //Debug.Log("Null X:" + tX + "Y: " + tY);
+        //    }
+
+        //}
     }
 
 
