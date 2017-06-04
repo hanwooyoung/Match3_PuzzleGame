@@ -63,7 +63,7 @@ public class CMap : MonoBehaviour {
             for(int tj = 0; tj <Col;tj++)
             {
                 CBlock tBlock = null;
-                Vector2 tVec = new Vector2((float)tj / 2 - 2, (float)ti / 2 - 2);
+                Vector2 tVec = new Vector2((float)tj/(float)1.11   - (float)3.6 , (float)ti / (float)1.11 - (float)4.2);
 
                 if (MapArray[tj, ti] == Kind.Wall)
                 {
