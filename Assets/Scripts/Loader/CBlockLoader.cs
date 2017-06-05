@@ -12,6 +12,8 @@ public class CBlockLoader : CResourceLoader {
         public string PathGreen;
         public string PathGray;
         public string PathWall;
+        public string PathVerticalBomb;
+        public string PathHorizontalBomb;
     }
 
     private BlockPaths InitBlockPaths()
@@ -24,6 +26,8 @@ public class CBlockLoader : CResourceLoader {
         paths.PathGreen = "Prefabs/Block/PFGreen";
         paths.PathGray = "Prefabs/Block/PFGray";
         paths.PathWall = "Prefabs/Block/PFWall";
+        paths.PathVerticalBomb = "Prefabs/Block/PFVerticalBomb";
+        paths.PathHorizontalBomb = "Prefabs/Block/PFHorizontalBomb";
 
         return paths;
     }
@@ -34,6 +38,10 @@ public class CBlockLoader : CResourceLoader {
     private CBlock PFGreen= null;
     private CBlock PFGray = null;
     private CBlock PFWall = null;
+    private CBlock PFVerticalBomb = null;
+    private CBlock PFHorizontalBomb = null;
+
+
 
     public Dictionary<CMap.Kind, CBlock> BlockKind = null;
 
@@ -48,6 +56,8 @@ public class CBlockLoader : CResourceLoader {
         PFGreen = Resources.Load<CBlock>(paths.PathGreen);
         PFGray = Resources.Load<CBlock>(paths.PathGray);
         PFWall = Resources.Load<CBlock>(paths.PathWall);
+        PFVerticalBomb = Resources.Load<CBlock>(paths.PathVerticalBomb);
+        PFHorizontalBomb = Resources.Load<CBlock>(paths.PathHorizontalBomb);
 
         BlockKind = new Dictionary<CMap.Kind, CBlock>();
 
@@ -57,7 +67,9 @@ public class CBlockLoader : CResourceLoader {
         BlockKind.Add(CMap.Kind.Pink, PFPink);
         BlockKind.Add(CMap.Kind.Wall, PFWall);
         BlockKind.Add(CMap.Kind.Yellow, PFYellow);
-
+        BlockKind.Add(CMap.Kind.VerticalBomb, PFVerticalBomb);
+        BlockKind.Add(CMap.Kind.HorizontalBomb, PFHorizontalBomb);
+        
     }
 
     public CBlock GetPrefab(CMap.Kind tKind)

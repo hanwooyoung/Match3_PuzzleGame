@@ -28,6 +28,82 @@ public class CBoomCheck : MonoBehaviour {
         }
     }
 
+    private bool mIsLeftBoomCheck = true;
+    public bool IsLeftBoomCheck
+    {
+        get
+        {
+            return mIsLeftBoomCheck;
+        }
+        set
+        {
+            mIsLeftBoomCheck = value;
+        }
+    }
+
+    private bool mIsRightBoomCheck = true;
+    public bool IsRightBoomCheck
+    {
+        get
+        {
+            return mIsRightBoomCheck;
+        }
+        set
+        {
+            mIsRightBoomCheck = value;
+        }
+    }
+    private bool mIsSideXBoomCheck = true;
+    public bool IsSideXBoomCheck
+    {
+        get
+        {
+            return mIsSideXBoomCheck;
+        }
+        set
+        {
+            mIsSideXBoomCheck = value;
+        }
+    }
+    private bool mIsUpBoomCheck = true;
+    public bool IsUpBoomCheck
+    {
+        get
+        {
+            return mIsUpBoomCheck;
+        }
+        set
+        {
+            mIsUpBoomCheck = value;
+        }
+    }
+    private bool mIsDownBoomCheck = true;
+    public bool IsDownBoomCheck
+    {
+        get
+        {
+            return mIsDownBoomCheck;
+        }
+        set
+        {
+            mIsDownBoomCheck = value;
+        }
+    }
+    private bool mIsSideYBoomCheck = true;
+    public bool IsSideYBoomCheck
+    {
+        get
+        {
+            return mIsSideYBoomCheck;
+        }
+        set
+        {
+            mIsSideYBoomCheck = value;
+        }
+    }
+
+
+
 
     public void LeftBoom()
     {
@@ -37,7 +113,7 @@ public class CBoomCheck : MonoBehaviour {
             if (BlockArray[SelectBlock.BlockCoordinate.X - 1, SelectBlock.BlockCoordinate.Y] == null || 
                 BlockArray[SelectBlock.BlockCoordinate.X - 2, SelectBlock.BlockCoordinate.Y] == null)
             {
-                Debug.Log("SelectBlock is null");
+                //Debug.Log("SelectBlock is null");
                 return;
             }
             if (SeletBlockKind == BlockArray[SelectBlock.BlockCoordinate.X - 1, SelectBlock.BlockCoordinate.Y].Kind &&
@@ -56,6 +132,8 @@ public class CBoomCheck : MonoBehaviour {
                         if (BoomBlockList.Contains(BlockArray[SelectBlock.BlockCoordinate.X - ti, SelectBlock.BlockCoordinate.Y]) == false)
                         {
                             BoomBlockList.Push(BlockArray[SelectBlock.BlockCoordinate.X - ti, SelectBlock.BlockCoordinate.Y]);
+                            Debug.Log("4개이상?");
+                            IsLeftBoomCheck = true;
                         }
                     }
                     else if (SeletBlockKind != BlockArray[SelectBlock.BlockCoordinate.X - ti, SelectBlock.BlockCoordinate.Y].Kind)
@@ -76,7 +154,7 @@ public class CBoomCheck : MonoBehaviour {
             if (BlockArray[SelectBlock.BlockCoordinate.X + 1, SelectBlock.BlockCoordinate.Y] == null || 
                 BlockArray[SelectBlock.BlockCoordinate.X + 2, SelectBlock.BlockCoordinate.Y] == null)
             {
-                Debug.Log("SelectBlock is null");
+                //Debug.Log("SelectBlock is null");
                 return;
             }
 
@@ -97,6 +175,8 @@ public class CBoomCheck : MonoBehaviour {
                         if (BoomBlockList.Contains(BlockArray[SelectBlock.BlockCoordinate.X + ti, SelectBlock.BlockCoordinate.Y]) == false)
                         {
                             BoomBlockList.Push(BlockArray[SelectBlock.BlockCoordinate.X + ti, SelectBlock.BlockCoordinate.Y]);
+                            Debug.Log("4개이상?");
+                            IsRightBoomCheck = true;
                         }
                     }
                     else if(SeletBlockKind != BlockArray[SelectBlock.BlockCoordinate.X + ti, SelectBlock.BlockCoordinate.Y].Kind)
@@ -116,7 +196,7 @@ public class CBoomCheck : MonoBehaviour {
             if (BlockArray[SelectBlock.BlockCoordinate.X + 1, SelectBlock.BlockCoordinate.Y] == null ||
                 BlockArray[SelectBlock.BlockCoordinate.X - 1, SelectBlock.BlockCoordinate.Y] == null)
             {
-                Debug.Log("SelectBlock is null");
+                //Debug.Log("SelectBlock is null");
                 return;
             }
 
@@ -147,6 +227,8 @@ public class CBoomCheck : MonoBehaviour {
                             if (BoomBlockList.Contains(BlockArray[SelectBlock.BlockCoordinate.X + (tNumber * tMinus), SelectBlock.BlockCoordinate.Y]) == false)
                             {
                                 BoomBlockList.Push(BlockArray[SelectBlock.BlockCoordinate.X + (tNumber * tMinus), SelectBlock.BlockCoordinate.Y]);
+                                Debug.Log("4개이상?");
+                                IsSideXBoomCheck = true;
                             }
 
                         }
@@ -177,7 +259,7 @@ public class CBoomCheck : MonoBehaviour {
             if (BlockArray[SelectBlock.BlockCoordinate.X, SelectBlock.BlockCoordinate.Y + 1] == null ||
                 BlockArray[SelectBlock.BlockCoordinate.X, SelectBlock.BlockCoordinate.Y + 2] == null)
             {
-                Debug.Log("SelectBlock is null");
+                //Debug.Log("SelectBlock is null");
                 return;
             }
             if (SeletBlockKind == BlockArray[SelectBlock.BlockCoordinate.X, SelectBlock.BlockCoordinate.Y + 1].Kind &&
@@ -202,6 +284,8 @@ public class CBoomCheck : MonoBehaviour {
                         if (BoomBlockList.Contains(BlockArray[SelectBlock.BlockCoordinate.X, SelectBlock.BlockCoordinate.Y + ti]) == false)
                         {
                             BoomBlockList.Push(BlockArray[SelectBlock.BlockCoordinate.X, SelectBlock.BlockCoordinate.Y + ti]);
+                            Debug.Log("4개이상?");
+                            IsUpBoomCheck = true;
                         }
                     }
                     else if (SeletBlockKind != BlockArray[SelectBlock.BlockCoordinate.X, SelectBlock.BlockCoordinate.Y + ti].Kind)
@@ -221,7 +305,7 @@ public class CBoomCheck : MonoBehaviour {
             if (BlockArray[SelectBlock.BlockCoordinate.X, SelectBlock.BlockCoordinate.Y - 1] == null ||
                 BlockArray[SelectBlock.BlockCoordinate.X, SelectBlock.BlockCoordinate.Y - 2] == null)
             {
-                Debug.Log("SelectBlock is null");
+                //Debug.Log("SelectBlock is null");
                 return;
             }
             if (SeletBlockKind == BlockArray[SelectBlock.BlockCoordinate.X, SelectBlock.BlockCoordinate.Y - 1].Kind &&
@@ -240,6 +324,8 @@ public class CBoomCheck : MonoBehaviour {
                         if (BoomBlockList.Contains(BlockArray[SelectBlock.BlockCoordinate.X , SelectBlock.BlockCoordinate.Y - ti]) == false)
                         {
                             BoomBlockList.Push(BlockArray[SelectBlock.BlockCoordinate.X , SelectBlock.BlockCoordinate.Y - ti]);
+                            Debug.Log("4개이상?");
+                            IsDownBoomCheck = true;
                         }
                     }
                     else if (SeletBlockKind != BlockArray[SelectBlock.BlockCoordinate.X , SelectBlock.BlockCoordinate.Y - ti].Kind)
@@ -260,7 +346,7 @@ public class CBoomCheck : MonoBehaviour {
             if (BlockArray[SelectBlock.BlockCoordinate.X, SelectBlock.BlockCoordinate.Y + 1] == null ||
                 BlockArray[SelectBlock.BlockCoordinate.X, SelectBlock.BlockCoordinate.Y - 1] == null)
             {
-                Debug.Log("SelectBlock is null");
+                //Debug.Log("SelectBlock is null");
                 return;
             }
             if (SeletBlockKind == BlockArray[SelectBlock.BlockCoordinate.X , SelectBlock.BlockCoordinate.Y + 1].Kind &&
@@ -290,6 +376,8 @@ public class CBoomCheck : MonoBehaviour {
                             if (BoomBlockList.Contains(BlockArray[SelectBlock.BlockCoordinate.X , SelectBlock.BlockCoordinate.Y + (tNumber * tMinus)]) == false)
                             {
                                 BoomBlockList.Push(BlockArray[SelectBlock.BlockCoordinate.X, SelectBlock.BlockCoordinate.Y + (tNumber * tMinus)]);
+                                Debug.Log("4개이상?");
+                                IsSideYBoomCheck = true;
                             }
 
                         }

@@ -303,75 +303,102 @@ public class CScenePlayGame : MonoBehaviour {
         }
     }
 
-
+    public void IsBombBlockCheck(CBlock tStandardBlock)
+    {
+        CBlock tBombBlock = null;
+        if(BoomCheck.IsLeftBoomCheck == true)
+        {
+            foreach(CBlock tBlock in BoomCheck.BoomBlockList)
+            {
+                if(tBlock == tStandardBlock)
+                {
+                    if(MoveVec.x != 0)
+                    {
+                        tBombBlock = GameObject.Instantiate<CBlock>(Map.BlockLoader.GetPrefab(CMap.Kind.HorizontalBomb), tBlock.transform.position, Quaternion.identity);
+                        tBombBlock.transform.SetParent(this.transform);
+                        Map.BlockArray[tBlock.BlockCoordinate.X, tBlock.BlockCoordinate.Y] = tBombBlock;
+                        Map.BlockArray[tBlock.BlockCoordinate.X, tBlock.BlockCoordinate.Y].SetScene(this);
+                        tBombBlock.BlockCoordinate.X = tBlock.BlockCoordinate.X;
+                        tBombBlock.BlockCoordinate.Y = tBlock.BlockCoordinate.Y;
+                    }
+                    else
+                    {
+                        tBombBlock = GameObject.Instantiate<CBlock>(Map.BlockLoader.GetPrefab(CMap.Kind.VerticalBomb), tBlock.transform.position, Quaternion.identity);
+                        tBombBlock.transform.SetParent(this.transform);
+                        Map.BlockArray[tBlock.BlockCoordinate.X, tBlock.BlockCoordinate.Y] = tBombBlock;
+                        Map.BlockArray[tBlock.BlockCoordinate.X, tBlock.BlockCoordinate.Y].SetScene(this);
+                        tBombBlock.BlockCoordinate.X = tBlock.BlockCoordinate.X;
+                        tBombBlock.BlockCoordinate.Y = tBlock.BlockCoordinate.Y;
+                    }
+                    //Map.MapArray[tBlock.BlockCoordinate.X,tBlock.BlockCoordinate.Y]
+                    BoomCheck.IsLeftBoomCheck = false;
+                }
+            }
+        } 
+    }
 
     public void ReCreateBlock()
     {
-        //for (;;)
-        //{
-            for (int ti = 1; ti < CMap.Raw-1; ti++)
+
+        for (int ti = 1; ti < CMap.Raw - 1; ti++)
+        {
+            for (int tj = 1; tj < CMap.Col - 1; tj++)
             {
-                for (int tj = 1; tj < CMap.Col-1; tj++)
+                if (Map.MapArray[tj, ti] == CMap.Kind.None)
                 {
-                    if (Map.MapArray[tj, ti] == CMap.Kind.None)
+                    CBlock tBlock = null;
+                    Vector2 tVec = new Vector2((float)tj / (float)1.11 - (float)3.6, (float)ti / (float)1.11 - (float)4.2);
+                    Vector2 tCreateVec = new Vector2(tVec.x, tVec.y + 2.0f);
+
+                    int tRandom = 0;
+                    tRandom = Random.Range(4, 9);
+                    CMap.Kind tCurrentBlock = (CMap.Kind)tRandom;
+
+                    Map.MapArray[tj, ti] = tCurrentBlock;
+                    CMap.Kind tRawBlock = tCurrentBlock;
+
+
+                    if (tj >= 3)
                     {
-                        CBlock tBlock = null;
-                        Vector2 tVec = new Vector2((float)tj / (float)1.11 - (float)3.6, (float)ti / (float)1.11 - (float)4.2);
-                        Vector2 tCreateVec = new Vector2(tVec.x, tVec.y+2.0f);
-
-                        int tRandom = 0;
-                        tRandom = Random.Range(2, 7);
-                        CMap.Kind tCurrentBlock = (CMap.Kind)tRandom;
-
-                        Map.MapArray[tj, ti] = tCurrentBlock;
-                        CMap.Kind tRawBlock = tCurrentBlock;
-
-
-                        if (tj >= 3)
+                        if (Map.MapArray[tj, ti] == Map.MapArray[tj - 1, ti] && Map.MapArray[tj, ti] == Map.MapArray[tj - 2, ti])
                         {
-                            if (Map.MapArray[tj, ti] == Map.MapArray[tj - 1, ti] && Map.MapArray[tj, ti] == Map.MapArray[tj - 2, ti])
+                            do
                             {
-                                do
-                                {
-                                    tRandom = Random.Range(2, 6);
-                                }
-                                while (tCurrentBlock == (CMap.Kind)tRandom);
-
-                                tCurrentBlock = (CMap.Kind)tRandom;
-                                Map.MapArray[tj, ti] = tCurrentBlock;
-                                tRawBlock = tCurrentBlock;
+                                tRandom = Random.Range(4, 9);
                             }
+                            while (tCurrentBlock == (CMap.Kind)tRandom);
+
+                            tCurrentBlock = (CMap.Kind)tRandom;
+                            Map.MapArray[tj, ti] = tCurrentBlock;
+                            tRawBlock = tCurrentBlock;
                         }
-                        if (ti >= 3)
-                        {
-                            if (Map.MapArray[tj, ti] == Map.MapArray[tj, ti - 1] && Map.MapArray[tj, ti] == Map.MapArray[tj, ti - 2])
-                            {
-                                do
-                                {
-                                    tRandom = Random.Range(2, 6);
-                                }
-                                while (tCurrentBlock == (CMap.Kind)tRandom && tRawBlock == (CMap.Kind)tRandom);
-
-                                tCurrentBlock = (CMap.Kind)tRandom;
-                                Map.MapArray[tj, ti] = tCurrentBlock;
-                            }
-                        }
-
-
-                        tBlock = GameObject.Instantiate(Map.BlockLoader.GetPrefab(Map.MapArray[tj, ti]), tCreateVec, Quaternion.identity);
-                        tBlock.transform.DOMove(tVec, 0.25f);
-                        tBlock.transform.SetParent(this.transform);
-                        Map.BlockArray[tj, ti] = tBlock;
-                        Map.BlockArray[tj, ti].SetScene(this);
-                        tBlock.BlockCoordinate.X = tj;
-                        tBlock.BlockCoordinate.Y = ti;
-                        //Map.VecArray[tj, ti] = tVec;
                     }
+                    if (ti >= 3)
+                    {
+                        if (Map.MapArray[tj, ti] == Map.MapArray[tj, ti - 1] && Map.MapArray[tj, ti] == Map.MapArray[tj, ti - 2])
+                        {
+                            do
+                            {
+                                tRandom = Random.Range(4, 9);
+                            }
+                            while (tCurrentBlock == (CMap.Kind)tRandom && tRawBlock == (CMap.Kind)tRandom);
+
+                            tCurrentBlock = (CMap.Kind)tRandom;
+                            Map.MapArray[tj, ti] = tCurrentBlock;
+                        }
+                    }
+
+
+                    tBlock = GameObject.Instantiate(Map.BlockLoader.GetPrefab(Map.MapArray[tj, ti]), tCreateVec, Quaternion.identity);
+                    tBlock.transform.DOMove(tVec, 0.25f);
+                    tBlock.transform.SetParent(this.transform);
+                    Map.BlockArray[tj, ti] = tBlock;
+                    Map.BlockArray[tj, ti].SetScene(this);
+                    tBlock.BlockCoordinate.X = tj;
+                    tBlock.BlockCoordinate.Y = ti;
                 }
             }
-
-            //yield return new WaitForSeconds(1.5f);
-        //}
+        }
     }
 
 

@@ -1,0 +1,21 @@
+fileFormatVersion: 2
+guid: 408706d53ef28884cab7e3fea91a37a1
+timeCreated: 1496626610
+licenseType: Free
+TrueTypeFontImporter:
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: AK AppliqueWhite
+  fontNames:
+  - AK AppliqueWhite
+  fallbackFontReferences: []
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
