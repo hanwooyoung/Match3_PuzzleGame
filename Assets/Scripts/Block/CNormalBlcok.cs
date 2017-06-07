@@ -33,7 +33,7 @@ public class CNormalBlcok : CBlock {
 
     private void OnMouseDown()
     {
-        Debug.Log("나는야" + "X:" + BlockCoordinate.X + "Y:" + BlockCoordinate.Y);
+        //Debug.Log("나는야" + "X:" + BlockCoordinate.X + "Y:" + BlockCoordinate.Y);
         if (this.Kind != CMap.Kind.Wall )
         {
             IsClick = true;

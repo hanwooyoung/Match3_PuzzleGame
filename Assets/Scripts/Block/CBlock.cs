@@ -56,6 +56,7 @@ public class CBlock : MonoBehaviour {
 
     public void BlockDestroy()
     {
+        Debug.Log("나 터짐");
         GameObject.Destroy(gameObject);
     }
 }

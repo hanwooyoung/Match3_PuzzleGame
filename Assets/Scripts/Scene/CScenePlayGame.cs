@@ -71,6 +71,8 @@ public class CScenePlayGame : MonoBehaviour {
             DoSwap(MoveVec);
         if (SelectBlock == null || SwapBlock == null)
             IsDontMove = false;
+
+        //IsBombBlockCheck(SelectBlock);
         //IsCheckUpDate();
         //if (BoomCheck.IsBoomCheck == false)
         //UnSwap();
@@ -86,7 +88,7 @@ public class CScenePlayGame : MonoBehaviour {
     {
         SelectBlock = tBlock;
     }
-    
+
     public void SetSwapBlock(CBlock tBlock)
     {
         SwapBlock = tBlock;
@@ -97,7 +99,7 @@ public class CScenePlayGame : MonoBehaviour {
     {
         PossibleBoomCheck.IsCheck();
     }
-   
+
     public void DoSwap(Vector2 tMoveVec)
     {
         int tX = (int)tMoveVec.x;
@@ -106,7 +108,7 @@ public class CScenePlayGame : MonoBehaviour {
         {
             foreach (CBlock tBlock in Map.BlockArray)
             {
-                if(tBlock == SelectBlock)
+                if (tBlock == SelectBlock)
                 {
                     IsDontMove = true;
 
@@ -123,14 +125,14 @@ public class CScenePlayGame : MonoBehaviour {
                     BlockVec = tBlock.transform.position;
                     ReturnBlockVec = BlockVec;
 
-                    
+
 
                     if (SwapPos != CBlock.Move.None && Map.BlockArray[tBlockX + tX, tBlockY + tY].Kind != CMap.Kind.Wall)
                     {
                         SwapVec = Map.BlockArray[tBlockX + tX, tBlockY + tY].transform.position;
                         ReturnSwapVec = SwapVec;
 
-                        tBlock.transform.DOMove(SwapVec,0.1f);
+                        tBlock.transform.DOMove(SwapVec, 0.1f);
                         Map.BlockArray[tBlockX + tX, tBlockY + tY].transform.DOMove(BlockVec, 0.1f);
 
                         SetSwapBlock(Map.BlockArray[tBlockX + tX, tBlockY + tY]);
@@ -144,11 +146,11 @@ public class CScenePlayGame : MonoBehaviour {
                         Map.BlockArray[tBlockX, tBlockY + tY].BlockCoordinate.Y += tY;
 
                         tTmepKind = Map.MapArray[tBlockX, tBlockY];
-                        Map.MapArray[tBlockX, tBlockY] = Map.MapArray[tBlockX + tX, tBlockY +tY];
+                        Map.MapArray[tBlockX, tBlockY] = Map.MapArray[tBlockX + tX, tBlockY + tY];
                         Map.MapArray[tBlockX + tX, tBlockY + tY] = tTmepKind;
 
                     }
-                    
+
                     tBlock.ReSetMove();
                 }
             }
@@ -163,7 +165,7 @@ public class CScenePlayGame : MonoBehaviour {
         //Debug.Log("IsBlockBoom" + IsBlockBoom);
         if (BoomCheck.IsBoomCheck == false)// && IsBlockBoom == false )
         {
-            
+
             Invoke("UnSwap", 0.05f);
         }
         //if (IsBlockBoom == true)
@@ -175,9 +177,9 @@ public class CScenePlayGame : MonoBehaviour {
     [Button]
     public void UnSwap()
     {
-        if( false == Map.MapIsNull && SelectBlock != null && SwapBlock != null && SwapBlock.Kind != CMap.Kind.Wall)
+        if (false == Map.MapIsNull && SelectBlock != null && SwapBlock != null && SwapBlock.Kind != CMap.Kind.Wall)
         {
-            Debug.Log("UnSwap");
+            //Debug.Log("UnSwap");
             Vector2 tMoveVec = MoveVec;
 
             var tBlock = SelectBlock;
@@ -187,7 +189,7 @@ public class CScenePlayGame : MonoBehaviour {
             var tBlockX = tBlock.BlockCoordinate.X;
             var tBlockY = tBlock.BlockCoordinate.Y;
             CMap.Kind tTmepKind = tBlock.Kind;
-            Debug.Log(Map.BlockArray[tBlock.BlockCoordinate.X + tX , tBlock.BlockCoordinate.Y + tY].Kind);
+            //Debug.Log(Map.BlockArray[tBlock.BlockCoordinate.X + tX , tBlock.BlockCoordinate.Y + tY].Kind);
             if (Map.BlockArray[tBlock.BlockCoordinate.X + tX, tBlock.BlockCoordinate.Y + tY].Kind != CMap.Kind.Wall)
             {
                 tTmepBlock = Map.BlockArray[tBlock.BlockCoordinate.X + tX, tBlock.BlockCoordinate.Y + tY];
@@ -209,13 +211,13 @@ public class CScenePlayGame : MonoBehaviour {
                 Map.MapArray[tBlockX + tX, tBlockY + tY] = tTmepKind;
             }
 
-            
+
 
             //BoomCheck.IsBoomCheck = true;
         }
         SetSwapBlock(null);
-            IsDontMove = false;
-        
+        IsDontMove = false;
+
     }
 
 
@@ -234,8 +236,10 @@ public class CScenePlayGame : MonoBehaviour {
             BoomCheck.SetBlockArray(Map.BlockArray);
             foreach (CBlock tBlock in Map.BlockArray)
             {
-                if (null != tBlock && tBlock.Kind != CMap.Kind.None && tBlock.Kind != CMap.Kind.Wall)
+
+                if (null != tBlock && (SelectBlock == tBlock && tBlock.Kind != CMap.Kind.None && tBlock.Kind != CMap.Kind.Wall))
                 {
+
                     BoomCheck.SetSeletBlock(tBlock);
 
                     BoomCheck.RightBoom();
@@ -245,12 +249,9 @@ public class CScenePlayGame : MonoBehaviour {
                     BoomCheck.DownBoom();
                     BoomCheck.SideYBoom();
 
-                    if (BoomCheck.BoomBlockList.Count > 0)
-                    {
-                        tBlock.ReSetMove();
-                        BoomCheck.IsBoomCheck = true;
-                    }
 
+                    //IsBombBlockCheck(tBlock);
+                    tBlock.ReSetMove();
                 }
 
                 if (null != tBlock && SwapBlock == tBlock && tBlock.Kind != CMap.Kind.None && tBlock.Kind != CMap.Kind.Wall)
@@ -263,29 +264,31 @@ public class CScenePlayGame : MonoBehaviour {
                     BoomCheck.UpBoom();
                     BoomCheck.DownBoom();
                     BoomCheck.SideYBoom();
-
+                    //IsBombBlockCheck(tBlock);
                     tBlock.ReSetMove();
                 }
 
-                if (null != tBlock && (SelectBlock == tBlock && tBlock.Kind != CMap.Kind.None && tBlock.Kind != CMap.Kind.Wall))
+                if (null != tBlock && tBlock.Kind != CMap.Kind.None && tBlock.Kind != CMap.Kind.Wall)
                 {
-                    
                     BoomCheck.SetSeletBlock(tBlock);
-                   
+
                     BoomCheck.RightBoom();
                     BoomCheck.LeftBoom();
                     BoomCheck.SideXBoom();
                     BoomCheck.UpBoom();
                     BoomCheck.DownBoom();
                     BoomCheck.SideYBoom();
+                    //IsBombBlockCheck(tBlock);
+                    if (BoomCheck.BoomBlockList.Count > 0)
+                    {
+                        tBlock.ReSetMove();
+                        BoomCheck.IsBoomCheck = true;
+                    }
 
-                    
-
-                    tBlock.ReSetMove();
                 }
-               
             }
-            if(BoomCheck.BoomBlockList.Count >0)
+
+            if (BoomCheck.BoomBlockList.Count > 0)
             {
                 IsBlockBoom = true;
                 BoomCheck.IsBoomCheck = true;
@@ -296,46 +299,73 @@ public class CScenePlayGame : MonoBehaviour {
             }
             BoomCheck.Stack();
             //Debug.Log("count"+BoomCheck.BoomBlockList.Count);
+            CBlock tBombBlock = null;
+            foreach (CBlock tBlock in BoomCheck.BoomBlockList)
+            {
+                if(SelectBlock == tBlock)
+                {
+                    tBombBlock = tBlock;
+                    Debug.Log("이건 선택이여");
+                }
+                else if(SwapBlock == tBlock)
+                {
+                    tBombBlock = tBlock;
+                    Debug.Log("이건 스와비여");
+                }
+            }
+            if(tBombBlock == null && BoomCheck.BoomBlockList.Count >0)
+            {
+                tBombBlock = BoomCheck.BoomBlockList.Peek();
+            }
             BlockDestroy();
+            //Invoke("BlockDestroy", 2.0f);
+            IsBombBlockCheck(tBombBlock);
 
-            Invoke("ReCreateBlock", 2.0f);
+            Invoke("ReCreateBlock", 1.0f);
+            //ReCreateBlock();
             yield return new WaitForSeconds(0.1f);
         }
     }
 
-    public void IsBombBlockCheck(CBlock tStandardBlock)
+    public void IsBombBlockCheck(CBlock tBlock)
     {
         CBlock tBombBlock = null;
-        if(BoomCheck.IsLeftBoomCheck == true)
+        if (BoomCheck.IsSideXBoomCheck == true || BoomCheck.IsRightBoomCheck == true || BoomCheck.IsLeftBoomCheck == true
+            ||BoomCheck.IsUpBoomCheck == true || BoomCheck.IsDownBoomCheck == true || BoomCheck.IsSideYBoomCheck == true)
         {
-            foreach(CBlock tBlock in BoomCheck.BoomBlockList)
+            Debug.Log("뀨?" + MoveVec.x);
+
+            if (MoveVec.x != 0)
             {
-                if(tBlock == tStandardBlock)
-                {
-                    if(MoveVec.x != 0)
-                    {
-                        tBombBlock = GameObject.Instantiate<CBlock>(Map.BlockLoader.GetPrefab(CMap.Kind.HorizontalBomb), tBlock.transform.position, Quaternion.identity);
-                        tBombBlock.transform.SetParent(this.transform);
-                        Map.BlockArray[tBlock.BlockCoordinate.X, tBlock.BlockCoordinate.Y] = tBombBlock;
-                        Map.BlockArray[tBlock.BlockCoordinate.X, tBlock.BlockCoordinate.Y].SetScene(this);
-                        tBombBlock.BlockCoordinate.X = tBlock.BlockCoordinate.X;
-                        tBombBlock.BlockCoordinate.Y = tBlock.BlockCoordinate.Y;
-                    }
-                    else
-                    {
-                        tBombBlock = GameObject.Instantiate<CBlock>(Map.BlockLoader.GetPrefab(CMap.Kind.VerticalBomb), tBlock.transform.position, Quaternion.identity);
-                        tBombBlock.transform.SetParent(this.transform);
-                        Map.BlockArray[tBlock.BlockCoordinate.X, tBlock.BlockCoordinate.Y] = tBombBlock;
-                        Map.BlockArray[tBlock.BlockCoordinate.X, tBlock.BlockCoordinate.Y].SetScene(this);
-                        tBombBlock.BlockCoordinate.X = tBlock.BlockCoordinate.X;
-                        tBombBlock.BlockCoordinate.Y = tBlock.BlockCoordinate.Y;
-                    }
-                    //Map.MapArray[tBlock.BlockCoordinate.X,tBlock.BlockCoordinate.Y]
-                    BoomCheck.IsLeftBoomCheck = false;
-                }
+                tBombBlock = GameObject.Instantiate<CBlock>(Map.BlockLoader.GetPrefab(CMap.Kind.HorizontalBomb), Map.VecArray[tBlock.BlockCoordinate.X, tBlock.BlockCoordinate.Y], Quaternion.identity);
+                tBombBlock.transform.SetParent(this.transform);
+                Map.BlockArray[tBlock.BlockCoordinate.X, tBlock.BlockCoordinate.Y] = tBombBlock;
+                Map.BlockArray[tBlock.BlockCoordinate.X, tBlock.BlockCoordinate.Y].SetScene(this);
+                Map.MapArray[tBlock.BlockCoordinate.X, tBlock.BlockCoordinate.Y] = CMap.Kind.HorizontalBomb;
+                tBombBlock.BlockCoordinate.X = tBlock.BlockCoordinate.X;
+                tBombBlock.BlockCoordinate.Y = tBlock.BlockCoordinate.Y;
             }
-        } 
+            else
+            {
+                tBombBlock = GameObject.Instantiate<CBlock>(Map.BlockLoader.GetPrefab(CMap.Kind.VerticalBomb), Map.VecArray[tBlock.BlockCoordinate.X, tBlock.BlockCoordinate.Y], Quaternion.identity);
+                tBombBlock.transform.SetParent(this.transform);
+                Map.BlockArray[tBlock.BlockCoordinate.X, tBlock.BlockCoordinate.Y] = tBombBlock;
+                Map.BlockArray[tBlock.BlockCoordinate.X, tBlock.BlockCoordinate.Y].SetScene(this);
+                Map.MapArray[tBlock.BlockCoordinate.X, tBlock.BlockCoordinate.Y] = CMap.Kind.VerticalBomb;
+                tBombBlock.BlockCoordinate.X = tBlock.BlockCoordinate.X;
+                tBombBlock.BlockCoordinate.Y = tBlock.BlockCoordinate.Y;
+            }
+            //Map.MapArray[tBlock.BlockCoordinate.X,tBlock.BlockCoordinate.Y]
+            BoomCheck.IsSideXBoomCheck = false;
+            BoomCheck.IsRightBoomCheck = false;
+            BoomCheck.IsLeftBoomCheck = false;
+            BoomCheck.IsUpBoomCheck = false;
+            BoomCheck.IsDownBoomCheck = false;
+            BoomCheck.IsSideYBoomCheck = false;
+        }
     }
+ 
+    
 
     public void ReCreateBlock()
     {
@@ -427,6 +457,8 @@ public class CScenePlayGame : MonoBehaviour {
     [Button]
     public void BlockDestroy()
     {
+        
+
         if (BoomCheck.BoomBlockList.Count > 0)
         {
             while (BoomCheck.BoomBlockList.Count > 0)
@@ -453,7 +485,7 @@ public class CScenePlayGame : MonoBehaviour {
         {
             BoomCheck.IsBoomCheck = false;
         }
-
+        Map.BlockNullCheck();
     }
 
     [Button]
@@ -477,23 +509,4 @@ public class CScenePlayGame : MonoBehaviour {
         }
     }
     
-
-    //[Button]
-    //public void BlockNullCheck()
-    //{
-    //    foreach (var ti in Map.BlockArray)
-    //    {
-    //        if(ti == null)
-    //        {
-    //            var tX = ti.BlockCoordinate.X;
-    //            var tY = ti.BlockCoordinate.Y;
-    //            int tN = 0;
-    //            while((tY + tN + 1)<7)
-    //            {
-    //                Map.BlockArray[tX, tY + tN + 1].transform.DOMove(new Vector2(tX, tY + tN), 0.5f);
-    //            }
-
-    //        }
-    //    }
-    //}
 }

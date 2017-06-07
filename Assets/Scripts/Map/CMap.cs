@@ -135,7 +135,7 @@ public class CMap : MonoBehaviour {
     /// <returns></returns>
     public IEnumerator BlockNullCheck()
     {
-        for(;;)
+        for (;;)
         {
             int ti = 0;
             int tDownCount = 0;
@@ -171,23 +171,6 @@ public class CMap : MonoBehaviour {
                     {
                         MapIsNull = false;
                     }
-
-                    //if(BlockArray[tj,ti] == null)
-                    //{
-                    //    for(int tk = 1;tk+ti < Raw;tk++)
-                    //    {
-                    //        if(BlockArray[tj, ti+tk] != null)
-                    //        {
-                    //            BlockArray[tj, ti + tk].transform.DOMove(VecArray[tj, ti + tDownCount], 0.5f);
-                    //            BlockArray[tj, ti+ tDownCount] = BlockArray[tj, ti + tk];
-                    //            BlockArray[tj, ti+ tDownCount].BlockCoordinate.X = tj;
-                    //            BlockArray[tj, ti+ tDownCount].BlockCoordinate.Y = ti;
-                    //            MapArray[tj, ti+ tDownCount] = MapArray[tj, ti + tk];
-                    //            tDownCount++;
-                    //        }
-
-                    //    }
-                    //}
 
                 }
             }

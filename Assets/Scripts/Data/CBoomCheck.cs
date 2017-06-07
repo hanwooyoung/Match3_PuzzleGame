@@ -28,7 +28,7 @@ public class CBoomCheck : MonoBehaviour {
         }
     }
 
-    private bool mIsLeftBoomCheck = true;
+    private bool mIsLeftBoomCheck = false;
     public bool IsLeftBoomCheck
     {
         get
@@ -41,7 +41,7 @@ public class CBoomCheck : MonoBehaviour {
         }
     }
 
-    private bool mIsRightBoomCheck = true;
+    private bool mIsRightBoomCheck = false;
     public bool IsRightBoomCheck
     {
         get
@@ -53,7 +53,7 @@ public class CBoomCheck : MonoBehaviour {
             mIsRightBoomCheck = value;
         }
     }
-    private bool mIsSideXBoomCheck = true;
+    private bool mIsSideXBoomCheck = false;
     public bool IsSideXBoomCheck
     {
         get
@@ -65,7 +65,7 @@ public class CBoomCheck : MonoBehaviour {
             mIsSideXBoomCheck = value;
         }
     }
-    private bool mIsUpBoomCheck = true;
+    private bool mIsUpBoomCheck = false;
     public bool IsUpBoomCheck
     {
         get
@@ -77,7 +77,7 @@ public class CBoomCheck : MonoBehaviour {
             mIsUpBoomCheck = value;
         }
     }
-    private bool mIsDownBoomCheck = true;
+    private bool mIsDownBoomCheck = false;
     public bool IsDownBoomCheck
     {
         get
@@ -89,7 +89,7 @@ public class CBoomCheck : MonoBehaviour {
             mIsDownBoomCheck = value;
         }
     }
-    private bool mIsSideYBoomCheck = true;
+    private bool mIsSideYBoomCheck = false;
     public bool IsSideYBoomCheck
     {
         get
