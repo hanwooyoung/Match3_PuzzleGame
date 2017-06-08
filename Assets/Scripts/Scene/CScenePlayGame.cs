@@ -431,7 +431,6 @@ public class CScenePlayGame : MonoBehaviour {
         }
     }
 
-
     [Button]
     public void Stack()
     {
@@ -465,7 +464,7 @@ public class CScenePlayGame : MonoBehaviour {
             {
                 CBlock tBlock = null;
                 tBlock = BoomCheck.BoomBlockList.Pop();
-
+               
                 for (int ti = 0; ti < CMap.Raw; ti++)
                 {
                     for (int tj = 0; tj < CMap.Col; tj++)
@@ -473,7 +472,7 @@ public class CScenePlayGame : MonoBehaviour {
                         if (tBlock == Map.BlockArray[tj, ti] && Map.BlockArray[tj, ti].Kind != CMap.Kind.Wall)
                         {
 
-                            Map.BlockArray[tj, ti].BlockDestroy();
+                            Map.BlockArray[tj, ti].DoBoom();
                             Map.MapArray[tj, ti] = CMap.Kind.None;
                             IsBlockBoom = true;
                         }

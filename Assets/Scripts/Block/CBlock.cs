@@ -24,6 +24,8 @@ public class CBlock : MonoBehaviour {
     public CMap.Kind Kind;
     public Move BlockMove = Move.None;
     public CScenePlayGame ScenePlayGeme = null;
+    public GameObject InstBody = null;
+    public GameObject BoomParticle = null;
 
     public void SetScene(CScenePlayGame tScenePlayGame)
     {
@@ -53,10 +55,17 @@ public class CBlock : MonoBehaviour {
         BlockMove = Move.None;
         ScenePlayGeme.SetSwapPos(BlockMove);
     }
-
-    public void BlockDestroy()
+    private float mTime = 0.0f;
+    public void DoBoom()
     {
-        Debug.Log("나 터짐");
+        BoomParticle.gameObject.SetActive(true);
+
+        StartCoroutine(BlockDestroy());
+    }
+
+    public IEnumerator BlockDestroy()
+    {
+        yield return new WaitForSeconds(1.0f);
         GameObject.Destroy(gameObject);
     }
 }
