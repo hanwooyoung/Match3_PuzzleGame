@@ -8,6 +8,7 @@ using DG.Tweening;
 public class CScenePlayGame : MonoBehaviour {
 
     public CMap Map = null;
+    public CUIPlayGame UIPlayGame = null;
 
     public CBlock SelectBlock = null;
     public CBlock SwapBlock = null;
@@ -18,6 +19,8 @@ public class CScenePlayGame : MonoBehaviour {
 
     public CPossibleBoomCheck PossibleBoomCheck = null;
 
+    public float TotalTimeHp = 60.0f;
+   
     public bool IsBlockBoom = false;
     private bool mIsDontMove = false;
     public bool IsDontMove
@@ -31,6 +34,62 @@ public class CScenePlayGame : MonoBehaviour {
             mIsDontMove = value;
         }
     }
+
+
+    private int mCoin = 0;
+    public int Coin
+    {
+        get
+        {
+            return mCoin;
+        }
+        set
+        {
+            mCoin = value;
+        }
+    }
+    public void AddCoin(int tCoin)
+    {
+        Coin += tCoin;
+        UIPlayGame.SetTxtcoin(Coin);
+    }
+
+    private int mScore = 0;
+    public int Score
+    {
+        get
+        {
+            return mScore;
+        }
+        set
+        {
+            mScore = value;
+        }
+    }
+    public void AddScore(int tScore)
+    {
+        Score += tScore;
+        UIPlayGame.SetTxtScore(Score);
+    }
+
+    private bool mIsPlaying = true;
+    public float HpTickTime = 1.0f;
+    private CIntReactiveProperty mCurrentHp = null;
+    public CIntReactiveProperty CurrentHp
+    {
+        get
+        {
+            if (mCurrentHp == null)
+            {
+                mCurrentHp = new CIntReactiveProperty();
+            }
+            return mCurrentHp;
+        }
+    }
+    public float HpTickPerHp = 0.016f;
+    public float HpTickPerHpRatio = 0.01f;
+    private Coroutine mCoroutineTickHp = null;
+
     private void Awake()
     {
         Map = new CMap();
@@ -39,7 +98,9 @@ public class CScenePlayGame : MonoBehaviour {
 
         PossibleBoomCheck = new CPossibleBoomCheck();
         PossibleBoomCheck.SetMapArray(Map.MapArray);
-
+        CurrentHp.Value = 60;
+        CurrentHp.Subscribe((hp) => UIPlayGame.TimeHpBar.value = (float)hp / TotalTimeHp);
+        //CurrentHp.Subscribe((hp) => UIPlayGame.TimeHpBar.value = (float)hp / TotalTimeHp);
     }
 
     // Use this for initialization
@@ -59,7 +120,7 @@ public class CScenePlayGame : MonoBehaviour {
         }
 
         StartCoroutine(Map.BlockNullCheck());
-
+        mCoroutineTickHp = StartCoroutine(TickHp());
     }
 
     // Update is called once per frame
@@ -79,6 +140,28 @@ public class CScenePlayGame : MonoBehaviour {
 
     }
 
+    private IEnumerator TickHp()
+    {
+        while (mIsPlaying)
+        {
+            DecrementHp(1);
+            yield return new WaitForSeconds(HpTickTime);
+        }
+    }
+
+    public void DecrementHp(int value)
+    {
+            mCurrentHp.Value -= value;
+        if (mCurrentHp.Value < 0)
+        {
+            
+            mCurrentHp.Value = 0;
+            
+            //GameOver();
+        }
+        UIPlayGame.SetTxtTime(mCurrentHp.Value);
+
+    }
     public void SetSwapPos(CBlock.Move tSwapPos)
     {
         SwapPos = tSwapPos;
@@ -237,7 +320,9 @@ public class CScenePlayGame : MonoBehaviour {
             foreach (CBlock tBlock in Map.BlockArray)
             {
 
-                if (null != tBlock && (SelectBlock == tBlock && tBlock.Kind != CMap.Kind.None && tBlock.Kind != CMap.Kind.Wall))
+                if (null != tBlock && SelectBlock == tBlock &&
+                    tBlock.Kind != CMap.Kind.HorizontalBomb && tBlock.Kind != CMap.Kind.VerticalBomb &&
+                    tBlock.Kind != CMap.Kind.None && tBlock.Kind != CMap.Kind.Wall)
                 {
 
                     BoomCheck.SetSeletBlock(tBlock);
@@ -254,7 +339,9 @@ public class CScenePlayGame : MonoBehaviour {
                     tBlock.ReSetMove();
                 }
 
-                if (null != tBlock && SwapBlock == tBlock && tBlock.Kind != CMap.Kind.None && tBlock.Kind != CMap.Kind.Wall)
+                if (null != tBlock && SwapBlock == tBlock &&
+                    tBlock.Kind != CMap.Kind.HorizontalBomb && tBlock.Kind != CMap.Kind.VerticalBomb &&
+                    tBlock.Kind != CMap.Kind.None && tBlock.Kind != CMap.Kind.Wall)
                 {
                     BoomCheck.SetSeletBlock(tBlock);
 
@@ -268,7 +355,9 @@ public class CScenePlayGame : MonoBehaviour {
                     tBlock.ReSetMove();
                 }
 
-                if (null != tBlock && tBlock.Kind != CMap.Kind.None && tBlock.Kind != CMap.Kind.Wall)
+                if (null != tBlock && tBlock.Kind != CMap.Kind.None &&
+                    tBlock.Kind != CMap.Kind.HorizontalBomb && tBlock.Kind != CMap.Kind.VerticalBomb &&
+                    tBlock.Kind != CMap.Kind.Wall)
                 {
                     BoomCheck.SetSeletBlock(tBlock);
 
