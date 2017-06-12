@@ -14,6 +14,7 @@ public class CBoomCheck : MonoBehaviour {
     //public int LeftBoomNumber = 0;
     //public int RightBoomNumber = 0;
 
+  
 
     private bool mIsBoomCheck = true;
     public bool IsBoomCheck
@@ -27,6 +28,20 @@ public class CBoomCheck : MonoBehaviour {
             mIsBoomCheck = value;
         }
     }
+
+    private bool mIsFiveBoomCheck = false;
+    public bool IsFiveBoomCheck
+    {
+        get
+        {
+            return mIsFiveBoomCheck;
+        }
+        set
+        {
+            mIsFiveBoomCheck = value;
+        }
+    }
+
 
     private bool mIsLeftBoomCheck = false;
     public bool IsLeftBoomCheck
@@ -133,6 +148,11 @@ public class CBoomCheck : MonoBehaviour {
                         {
                             BoomBlockList.Push(BlockArray[SelectBlock.BlockCoordinate.X - ti, SelectBlock.BlockCoordinate.Y]);
                             Debug.Log("4개이상?");
+                            if(ti>=5)
+                            {
+                                IsFiveBoomCheck = true;
+                                Debug.Log("5개이상!");
+                            }
                             IsLeftBoomCheck = true;
                         }
                     }
@@ -176,6 +196,11 @@ public class CBoomCheck : MonoBehaviour {
                         {
                             BoomBlockList.Push(BlockArray[SelectBlock.BlockCoordinate.X + ti, SelectBlock.BlockCoordinate.Y]);
                             Debug.Log("4개이상?");
+                            if (ti >= 5)
+                            {
+                                IsFiveBoomCheck = true;
+                                Debug.Log("5개이상!");
+                            }
                             IsRightBoomCheck = true;
                         }
                     }
@@ -228,6 +253,11 @@ public class CBoomCheck : MonoBehaviour {
                             {
                                 BoomBlockList.Push(BlockArray[SelectBlock.BlockCoordinate.X + (tNumber * tMinus), SelectBlock.BlockCoordinate.Y]);
                                 Debug.Log("4개이상?");
+                                if (ti >= 5)
+                                {
+                                    IsFiveBoomCheck = true;
+                                    Debug.Log("5개이상!");
+                                }
                                 IsSideXBoomCheck = true;
                             }
 
@@ -285,6 +315,11 @@ public class CBoomCheck : MonoBehaviour {
                         {
                             BoomBlockList.Push(BlockArray[SelectBlock.BlockCoordinate.X, SelectBlock.BlockCoordinate.Y + ti]);
                             Debug.Log("4개이상?");
+                            if (ti >= 5)
+                            {
+                                IsFiveBoomCheck = true;
+                                Debug.Log("5개이상!");
+                            }
                             IsUpBoomCheck = true;
                         }
                     }
@@ -325,6 +360,11 @@ public class CBoomCheck : MonoBehaviour {
                         {
                             BoomBlockList.Push(BlockArray[SelectBlock.BlockCoordinate.X , SelectBlock.BlockCoordinate.Y - ti]);
                             Debug.Log("4개이상?");
+                            if (ti >= 5)
+                            {
+                                IsFiveBoomCheck = true;
+                                Debug.Log("5개이상!");
+                            }
                             IsDownBoomCheck = true;
                         }
                     }
@@ -377,6 +417,11 @@ public class CBoomCheck : MonoBehaviour {
                             {
                                 BoomBlockList.Push(BlockArray[SelectBlock.BlockCoordinate.X, SelectBlock.BlockCoordinate.Y + (tNumber * tMinus)]);
                                 Debug.Log("4개이상?");
+                                if (ti >= 5)
+                                {
+                                    IsFiveBoomCheck = true;
+                                    Debug.Log("5개이상!");
+                                }
                                 IsSideYBoomCheck = true;
                             }
 
@@ -410,7 +455,45 @@ public class CBoomCheck : MonoBehaviour {
             SeletBlockKind = CMap.Kind.None;
         }
     }
-    
+
+
+    public void FiveBombCheck()
+    {
+        int[] tCountArray = { 0, 0, 0, 0, 0 };
+
+        foreach (var tBlock in BoomBlockList)
+        {
+            switch(tBlock.Kind)
+            {
+                case CMap.Kind.Blue:
+                    tCountArray[0] += 1;
+                    break;
+                case CMap.Kind.Gray:
+                    tCountArray[1] += 1;
+                    break;
+                case CMap.Kind.Green:
+                    tCountArray[2] += 1;
+
+                    break;
+                case CMap.Kind.Pink:
+                    tCountArray[3] += 1;
+
+                    break;
+                case CMap.Kind.Yellow:
+                    tCountArray[4] += 1;
+                    break;
+            }
+        }
+        foreach(int ti in tCountArray)
+        {
+            if(ti >=5)
+            {
+                IsFiveBoomCheck = true;
+            }
+        }
+
+    }
+
     public void Stack()
     {
         foreach (var ti in BoomBlockList)

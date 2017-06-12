@@ -12,13 +12,14 @@ public class CMap : MonoBehaviour {
     {
         None = 0,
         Wall = 1,
-        VerticalBomb = 2,
-        HorizontalBomb = 3,
-        Blue = 4,
-        Yellow = 5,
-        Green = 6,
-        Gray = 7,
-        Pink = 8,
+        FiveBomb = 2,
+        VerticalBomb = 3,
+        HorizontalBomb = 4,
+        Blue = 5,
+        Yellow = 6,
+        Green = 7,
+        Gray = 8,
+        Pink = 9,
     }
 
     public Kind[,] MapArray = null;
@@ -79,7 +80,7 @@ public class CMap : MonoBehaviour {
                 else if(MapArray[tj,ti] == Kind.None)
                 {
                     int tRandom = 0;
-                    tRandom = Random.Range(4, 9);
+                    tRandom = Random.Range(5, 10);
                     Kind tCurrentBlock = (Kind)tRandom;
                   
                     MapArray[tj, ti] = tCurrentBlock;
@@ -92,7 +93,7 @@ public class CMap : MonoBehaviour {
                         {
                             do
                             {
-                                tRandom = Random.Range(4, 9);
+                                tRandom = Random.Range(5, 10);
                             }
                             while (tCurrentBlock == (Kind)tRandom);
 
@@ -107,7 +108,7 @@ public class CMap : MonoBehaviour {
                         {
                             do
                             {
-                                tRandom = Random.Range(4, 9);
+                                tRandom = Random.Range(5, 10);
                             }
                             while (tCurrentBlock == (Kind)tRandom && tRawBlock == (Kind)tRandom);
 

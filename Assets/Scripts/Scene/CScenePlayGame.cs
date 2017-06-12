@@ -389,8 +389,10 @@ public class CScenePlayGame : MonoBehaviour {
             BoomCheck.Stack();
             //Debug.Log("count"+BoomCheck.BoomBlockList.Count);
             CBlock tBombBlock = null;
+
             foreach (CBlock tBlock in BoomCheck.BoomBlockList)
             {
+                
                 if(SelectBlock == tBlock)
                 {
                     tBombBlock = tBlock;
@@ -401,16 +403,18 @@ public class CScenePlayGame : MonoBehaviour {
                     tBombBlock = tBlock;
                     Debug.Log("이건 스와비여");
                 }
+                
             }
             if(tBombBlock == null && BoomCheck.BoomBlockList.Count >0)
             {
                 tBombBlock = BoomCheck.BoomBlockList.Peek();
             }
+            BoomCheck.FiveBombCheck();
             BlockDestroy();
             //Invoke("BlockDestroy", 2.0f);
             IsBombBlockCheck(tBombBlock);
 
-            Invoke("ReCreateBlock", 1.0f);
+            Invoke("ReCreateBlock", 0.5f);
             //ReCreateBlock();
             yield return new WaitForSeconds(0.1f);
         }
@@ -423,8 +427,18 @@ public class CScenePlayGame : MonoBehaviour {
             ||BoomCheck.IsUpBoomCheck == true || BoomCheck.IsDownBoomCheck == true || BoomCheck.IsSideYBoomCheck == true)
         {
             Debug.Log("뀨?" + MoveVec.x);
-
-            if (MoveVec.x != 0)
+            if( true == BoomCheck.IsFiveBoomCheck)
+            {
+                tBombBlock = GameObject.Instantiate<CBlock>(Map.BlockLoader.GetPrefab(CMap.Kind.FiveBomb), Map.VecArray[tBlock.BlockCoordinate.X, tBlock.BlockCoordinate.Y], Quaternion.identity);
+                tBombBlock.transform.SetParent(this.transform);
+                Map.BlockArray[tBlock.BlockCoordinate.X, tBlock.BlockCoordinate.Y] = tBombBlock;
+                Map.BlockArray[tBlock.BlockCoordinate.X, tBlock.BlockCoordinate.Y].SetScene(this);
+                Map.MapArray[tBlock.BlockCoordinate.X, tBlock.BlockCoordinate.Y] = CMap.Kind.FiveBomb;
+                tBombBlock.BlockCoordinate.X = tBlock.BlockCoordinate.X;
+                tBombBlock.BlockCoordinate.Y = tBlock.BlockCoordinate.Y;
+                BoomCheck.IsFiveBoomCheck = false;
+            }
+            else if (MoveVec.x != 0)
             {
                 tBombBlock = GameObject.Instantiate<CBlock>(Map.BlockLoader.GetPrefab(CMap.Kind.HorizontalBomb), Map.VecArray[tBlock.BlockCoordinate.X, tBlock.BlockCoordinate.Y], Quaternion.identity);
                 tBombBlock.transform.SetParent(this.transform);
@@ -470,7 +484,7 @@ public class CScenePlayGame : MonoBehaviour {
                     Vector2 tCreateVec = new Vector2(tVec.x, tVec.y + 2.0f);
 
                     int tRandom = 0;
-                    tRandom = Random.Range(4, 9);
+                    tRandom = Random.Range(5, 10);
                     CMap.Kind tCurrentBlock = (CMap.Kind)tRandom;
 
                     Map.MapArray[tj, ti] = tCurrentBlock;
@@ -483,7 +497,7 @@ public class CScenePlayGame : MonoBehaviour {
                         {
                             do
                             {
-                                tRandom = Random.Range(4, 9);
+                                tRandom = Random.Range(5, 10);
                             }
                             while (tCurrentBlock == (CMap.Kind)tRandom);
 
@@ -498,7 +512,7 @@ public class CScenePlayGame : MonoBehaviour {
                         {
                             do
                             {
-                                tRandom = Random.Range(4, 9);
+                                tRandom = Random.Range(5, 10);
                             }
                             while (tCurrentBlock == (CMap.Kind)tRandom && tRawBlock == (CMap.Kind)tRandom);
 

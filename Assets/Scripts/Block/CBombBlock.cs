@@ -49,6 +49,25 @@ public class CBombBlock : CBlock {
                     }
                 }
                 break;
+            case CMap.Kind.FiveBomb:
+                int tNumber = 0;
+
+                for (int ti = 0; ti <= 4; ti++)
+                {
+                    int tMinus = 1;
+                    if (ti % 2 == 0)
+                    {
+                        tMinus *= -1;
+                    }
+                    if (this.BlockCoordinate.X + (tNumber * tMinus) > 0 && this.BlockCoordinate.X + (tNumber * tMinus) < CMap.Col &&
+                        this.BlockCoordinate.Y + (tNumber * tMinus) > 0 && this.BlockCoordinate.Y + (tNumber * tMinus) < CMap.Raw)
+                    {
+                        ScenePlayGeme.BoomCheck.BoomBlockList.Push(ScenePlayGeme.Map.BlockArray[this.BlockCoordinate.X + (tNumber * tMinus), this.BlockCoordinate.Y]);
+                        ScenePlayGeme.BoomCheck.BoomBlockList.Push(ScenePlayGeme.Map.BlockArray[this.BlockCoordinate.X, this.BlockCoordinate.Y + (tNumber * tMinus)]);
+                    }
+                   
+                }
+                    break;
         }
     }
 
