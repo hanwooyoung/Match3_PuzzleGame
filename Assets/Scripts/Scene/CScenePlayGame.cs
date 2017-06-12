@@ -386,7 +386,6 @@ public class CScenePlayGame : MonoBehaviour {
             {
                 IsBlockBoom = false;
             }
-            BoomCheck.Stack();
             //Debug.Log("count"+BoomCheck.BoomBlockList.Count);
             CBlock tBombBlock = null;
 
@@ -413,8 +412,8 @@ public class CScenePlayGame : MonoBehaviour {
             BlockDestroy();
             //Invoke("BlockDestroy", 2.0f);
             IsBombBlockCheck(tBombBlock);
-
-            Invoke("ReCreateBlock", 0.5f);
+            Map.BlockNullCheck();
+            Invoke("ReCreateBlock", 1.0f);
             //ReCreateBlock();
             yield return new WaitForSeconds(0.1f);
         }
