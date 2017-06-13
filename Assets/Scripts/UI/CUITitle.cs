@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class CUIIntro : MonoBehaviour {
+public class CUITitle : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
@@ -15,8 +15,8 @@ public class CUIIntro : MonoBehaviour {
 		
 	}
 
-    public void GoSceneTitle()
+    public void OnClickGoTitleBtn()
     {
-        //SceneManager.LoadScene();
+        SceneManager.LoadScene("CSceneLobby");
     }
 }
