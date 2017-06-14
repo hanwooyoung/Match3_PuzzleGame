@@ -108,7 +108,18 @@ public class CUserData
             mItem4.Value = value;
         }
     }
-
+    private CPlayerPrefsInt mBestScore = null;
+    public int BestScore
+    {
+        get
+        {
+            return mBestScore.Value;
+        }
+        set
+        {
+            mBestScore.Value = value;
+        }
+    }
     public CUserData()
     {
         mCoin = new CPlayerPrefsInt("UserCoin");
@@ -119,6 +130,7 @@ public class CUserData
         mItem2 = new CPlayerPrefsInt("Item2");
         mItem3 = new CPlayerPrefsInt("Item3");
         mItem4 = new CPlayerPrefsInt("Item4");
+        mBestScore = new CPlayerPrefsInt("BestScore");
 
     }
 }

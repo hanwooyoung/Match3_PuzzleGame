@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using Inspector;
 using DG.Tweening;
 
@@ -8,8 +9,11 @@ using DG.Tweening;
 public class CScenePlayGame : MonoBehaviour {
 
     public CMap Map = null;
+    public CUserData UserData = null;
     public CUIPlayGame UIPlayGame = null;
-
+    public CGameOver GameoverPanel = null;
+    public CUILobby UILobby = null;
+    
     public CBlock SelectBlock = null;
     public CBlock SwapBlock = null;
     public CBlock.Move SwapPos = CBlock.Move.None;
@@ -18,6 +22,7 @@ public class CScenePlayGame : MonoBehaviour {
     public CBoomCheck BoomCheck = null;
 
     public CPossibleBoomCheck PossibleBoomCheck = null;
+
 
     public float TotalTimeHp = 60.0f;
    
@@ -95,6 +100,10 @@ public class CScenePlayGame : MonoBehaviour {
         Map = new CMap();
         BoomCheck = new CBoomCheck();
         BoomCheck.SetBlockArray(Map.BlockArray);
+        //GameoverPanel = new CGameOver();
+        GameoverPanel.SetScene(this);
+
+        UserData = new CUserData();
 
         PossibleBoomCheck = new CPossibleBoomCheck();
         PossibleBoomCheck.SetMapArray(Map.MapArray);
@@ -156,10 +165,18 @@ public class CScenePlayGame : MonoBehaviour {
         {
             
             mCurrentHp.Value = 0;
-            
-            //GameOver();
+
+            GameOver();
         }
         UIPlayGame.SetTxtTime(mCurrentHp.Value);
+
+    }
+
+    public void GameOver()
+    {
+        GameoverPanel.gameObject.SetActive(true);
+        UserData.BestScore = Score;
+
 
     }
     public void SetSwapPos(CBlock.Move tSwapPos)
@@ -413,7 +430,7 @@ public class CScenePlayGame : MonoBehaviour {
             //Invoke("BlockDestroy", 2.0f);
             IsBombBlockCheck(tBombBlock);
             Map.BlockNullCheck();
-            Invoke("ReCreateBlock", 1.0f);
+            Invoke("ReCreateBlock", 2.0f);
             //ReCreateBlock();
             yield return new WaitForSeconds(0.1f);
         }

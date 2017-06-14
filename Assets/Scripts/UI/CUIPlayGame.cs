@@ -32,4 +32,9 @@ public class CUIPlayGame : MonoBehaviour {
     {
         TimeTxt.text = string.Format("{0}", value.ToString());
     }
+
+    public void onClickPauseBtn()
+    {
+
+    }
 }
