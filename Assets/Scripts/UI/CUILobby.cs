@@ -31,6 +31,8 @@ public class CUILobby : MonoBehaviour {
 
     public GameObject HeartShopPopup = null;
 
+    
+
     private void Awake()
     {
         UserData = new CUserData();
@@ -69,6 +71,8 @@ public class CUILobby : MonoBehaviour {
                 mHeart = 0;
             }
             UserData.Heart = mHeart;
+            CSoundBGM.instance.OnPlayGamePlayBgm();
+            CSoundEffect.instance.OnPlayStartBtn();
             SceneManager.LoadScene("CScenePlayGame");
         }
         else
@@ -172,6 +176,7 @@ public class CUILobby : MonoBehaviour {
 
     public void OnClickHeartShopPopUpBtn()
     {
+        CSoundEffect.instance.OnPlayMenuClickBtn();
         HeartShopPopup.SetActive(true);
     }
 }
