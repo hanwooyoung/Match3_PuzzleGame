@@ -175,7 +175,11 @@ public class CScenePlayGame : MonoBehaviour {
     public void GameOver()
     {
         GameoverPanel.gameObject.SetActive(true);
-        UserData.BestScore = Score;
+        if(UserData.BestScore < Score)
+        {
+            UserData.BestScore = Score;
+        }
+        
 
 
     }
@@ -339,7 +343,7 @@ public class CScenePlayGame : MonoBehaviour {
 
                 if (null != tBlock && SelectBlock == tBlock &&
                     tBlock.Kind != CMap.Kind.HorizontalBomb && tBlock.Kind != CMap.Kind.VerticalBomb &&
-                    tBlock.Kind != CMap.Kind.None && tBlock.Kind != CMap.Kind.Wall)
+                    tBlock.Kind != CMap.Kind.FiveBomb && tBlock.Kind != CMap.Kind.None && tBlock.Kind != CMap.Kind.Wall)
                 {
 
                     BoomCheck.SetSeletBlock(tBlock);
@@ -358,7 +362,7 @@ public class CScenePlayGame : MonoBehaviour {
 
                 if (null != tBlock && SwapBlock == tBlock &&
                     tBlock.Kind != CMap.Kind.HorizontalBomb && tBlock.Kind != CMap.Kind.VerticalBomb &&
-                    tBlock.Kind != CMap.Kind.None && tBlock.Kind != CMap.Kind.Wall)
+                    tBlock.Kind != CMap.Kind.FiveBomb && tBlock.Kind != CMap.Kind.None && tBlock.Kind != CMap.Kind.Wall)
                 {
                     BoomCheck.SetSeletBlock(tBlock);
 
@@ -374,7 +378,7 @@ public class CScenePlayGame : MonoBehaviour {
 
                 if (null != tBlock && tBlock.Kind != CMap.Kind.None &&
                     tBlock.Kind != CMap.Kind.HorizontalBomb && tBlock.Kind != CMap.Kind.VerticalBomb &&
-                    tBlock.Kind != CMap.Kind.Wall)
+                    tBlock.Kind != CMap.Kind.FiveBomb && tBlock.Kind != CMap.Kind.Wall)
                 {
                     BoomCheck.SetSeletBlock(tBlock);
 
@@ -385,7 +389,7 @@ public class CScenePlayGame : MonoBehaviour {
                     BoomCheck.DownBoom();
                     BoomCheck.SideYBoom();
                     //IsBombBlockCheck(tBlock);
-                    if (BoomCheck.BoomBlockList.Count > 0)
+                    if (tBlock!= null && BoomCheck.BoomBlockList.Count > 0)
                     {
                         tBlock.ReSetMove();
                         BoomCheck.IsBoomCheck = true;
@@ -430,11 +434,34 @@ public class CScenePlayGame : MonoBehaviour {
             //Invoke("BlockDestroy", 2.0f);
             IsBombBlockCheck(tBombBlock);
             Map.BlockNullCheck();
-            Invoke("ReCreateBlock", 2.0f);
+            //Invoke("ReCreateBlock", 2.0f);
+            bool IsNull = false;
+            foreach(var tBlock in Map.MapArray)
+            {
+                if(tBlock == CMap.Kind.None)
+                {
+                    IsNull = true;
+                    break;
+                }
+            }
+            if(IsNull == true)
+            {
+                Debug.Log("시작?");
+                StartCoroutine(ReCreateBlock());
+
+            }
+            else
+            {
+                //Debug.Log("스탑이됨?");
+                StopCoroutine(ReCreateBlock());
+                IsNull = false;
+            }
             //ReCreateBlock();
             yield return new WaitForSeconds(0.1f);
         }
     }
+
+    
 
     public void IsBombBlockCheck(CBlock tBlock)
     {
@@ -486,9 +513,9 @@ public class CScenePlayGame : MonoBehaviour {
  
     
 
-    public void ReCreateBlock()
+    public IEnumerator ReCreateBlock()
     {
-
+        yield return new WaitForSeconds(0.3f);
         for (int ti = 1; ti < CMap.Raw - 1; ti++)
         {
             for (int tj = 1; tj < CMap.Col - 1; tj++)
@@ -548,6 +575,8 @@ public class CScenePlayGame : MonoBehaviour {
                 }
             }
         }
+
+
     }
 
     [Button]

@@ -25,7 +25,7 @@ public class CBlock : MonoBehaviour {
     public Move BlockMove = Move.None;
     public CScenePlayGame ScenePlayGeme = null;
     public GameObject InstBody = null;
-    //public GameObject BoomParticle = null;
+    public GameObject InstBoom = null;
 
     public void SetScene(CScenePlayGame tScenePlayGame)
     {
@@ -58,10 +58,15 @@ public class CBlock : MonoBehaviour {
     //private float mTime = 0.0f;
     public void DoBoom()
     {
-        //BoomParticle.gameObject.SetActive(true);
-        if(this.Kind == CMap.Kind.HorizontalBomb || this.Kind == CMap.Kind.VerticalBomb)
+        InstBody.gameObject.SetActive(false);
+        InstBoom.gameObject.SetActive(true);
+        if (this.Kind == CMap.Kind.HorizontalBomb || this.Kind == CMap.Kind.VerticalBomb)
         {
             ScenePlayGeme.AddCoin(10);
+        }
+        if(this.Kind == CMap.Kind.FiveBomb)
+        {
+            ScenePlayGeme.AddCoin(20);
         }
         ScenePlayGeme.AddScore(100);
         StartCoroutine(BlockDestroy());
@@ -69,7 +74,7 @@ public class CBlock : MonoBehaviour {
 
     public IEnumerator BlockDestroy()
     {
-        yield return new WaitForSeconds(0.0f);
+        yield return new WaitForSeconds(0.2f);
         GameObject.Destroy(gameObject);
     }
 }

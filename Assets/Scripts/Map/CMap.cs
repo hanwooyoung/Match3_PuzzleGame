@@ -170,6 +170,7 @@ public class CMap : MonoBehaviour {
                     }
                     else
                     {
+                        //Debug.Log("안옴?");
                         MapIsNull = false;
                     }
 

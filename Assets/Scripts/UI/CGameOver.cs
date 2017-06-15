@@ -10,8 +10,12 @@ public class CGameOver : MonoBehaviour {
     public Text ScoreTxt = null;
     public int Score = 0;
     public Text CoinTxt = null;
+    public CUserData UserData = null;
 
-
+    private void Awake()
+    {
+        UserData = new CUserData();
+    }
     // Use this for initialization
     void Start () {
 
@@ -50,6 +54,7 @@ public class CGameOver : MonoBehaviour {
 
     public void OnClickGoLobbyBtn()
     {
+        UserData.Coin += ScenePlayGame.Coin;
         SceneManager.LoadScene("CSceneLobby");
     }
 
