@@ -74,6 +74,7 @@ public class CBlock : MonoBehaviour {
 
     public IEnumerator BlockDestroy()
     {
+        CSoundEffect.instance.OnPlayBoom();
         yield return new WaitForSeconds(0.2f);
         GameObject.Destroy(gameObject);
     }

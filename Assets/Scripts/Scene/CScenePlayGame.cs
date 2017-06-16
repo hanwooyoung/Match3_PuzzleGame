@@ -25,7 +25,9 @@ public class CScenePlayGame : MonoBehaviour {
 
 
     public float TotalTimeHp = 60.0f;
-   
+
+    public bool IsWarningSonudOn = false;
+
     public bool IsBlockBoom = false;
     private bool mIsDontMove = false;
     public bool IsDontMove
@@ -118,7 +120,7 @@ public class CScenePlayGame : MonoBehaviour {
         Map.CreateMap();
         //StartCoroutine(ReCreateBlock());
         StartCoroutine(IsCheckUpDate());
-
+        
 
         for (int ti = 0; ti < CMap.Raw; ti++)
         {
@@ -127,9 +129,15 @@ public class CScenePlayGame : MonoBehaviour {
                 Map.BlockArray[ti, tj].SetScene(this);
             }
         }
-
+        CSoundEffect.instance.OnPlayReadyGo();
         StartCoroutine(Map.BlockNullCheck());
         mCoroutineTickHp = StartCoroutine(TickHp());
+    }
+
+    public void GameStart()
+    {
+        Debug.Log("이것도 멈춤?");
+        Time.timeScale = 1;
     }
 
     // Update is called once per frame
@@ -157,13 +165,24 @@ public class CScenePlayGame : MonoBehaviour {
             yield return new WaitForSeconds(HpTickTime);
         }
     }
+   
 
     public void DecrementHp(int value)
     {
             mCurrentHp.Value -= value;
+
+        if (mCurrentHp.Value <= 5 && CSoundEffect.instance.Warning.isPlaying == false)
+        {
+            CSoundEffect.instance.OnPlayWarning();
+        }
+        else if(mCurrentHp.Value >6)
+        {
+            CSoundEffect.instance.OffWarning();
+        }
+
+
         if (mCurrentHp.Value < 0)
         {
-            
             mCurrentHp.Value = 0;
 
             GameOver();
@@ -174,6 +193,7 @@ public class CScenePlayGame : MonoBehaviour {
 
     public void GameOver()
     {
+        CSoundEffect.instance.OffWarning();
         GameoverPanel.gameObject.SetActive(true);
         if(UserData.BestScore < Score)
         {
@@ -254,7 +274,7 @@ public class CScenePlayGame : MonoBehaviour {
                         Map.MapArray[tBlockX + tX, tBlockY + tY] = tTmepKind;
 
                     }
-
+                    CSoundEffect.instance.OnPlaySwap();
                     tBlock.ReSetMove();
                 }
             }
@@ -283,6 +303,7 @@ public class CScenePlayGame : MonoBehaviour {
     {
         if (false == Map.MapIsNull && SelectBlock != null && SwapBlock != null && SwapBlock.Kind != CMap.Kind.Wall)
         {
+            CSoundEffect.instance.OnPlayUnSwap();
             //Debug.Log("UnSwap");
             Vector2 tMoveVec = MoveVec;
 
@@ -446,7 +467,7 @@ public class CScenePlayGame : MonoBehaviour {
             }
             if(IsNull == true)
             {
-                Debug.Log("시작?");
+                //Debug.Log("시작?");
                 StartCoroutine(ReCreateBlock());
 
             }
@@ -515,7 +536,7 @@ public class CScenePlayGame : MonoBehaviour {
 
     public IEnumerator ReCreateBlock()
     {
-        yield return new WaitForSeconds(0.3f);
+        yield return new WaitForSeconds(0.5f);
         for (int ti = 1; ti < CMap.Raw - 1; ti++)
         {
             for (int tj = 1; tj < CMap.Col - 1; tj++)

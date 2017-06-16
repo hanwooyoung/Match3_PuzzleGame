@@ -8,6 +8,16 @@ public class CSoundEffect : MonoBehaviour {
 
     public AudioSource MenuClickBtn = null;
     public AudioSource StartBtn = null;
+    public AudioSource Swap = null;
+    public AudioSource UnSwap = null;
+    public AudioSource Boom = null;
+    public AudioSource Select = null;
+    public AudioSource Whistle = null;
+    public AudioSource Warning = null;
+    public AudioSource Timeover = null;
+    public AudioSource ReadyGo = null;
+
+
 
     private void Awake()
     {
@@ -41,5 +51,49 @@ public class CSoundEffect : MonoBehaviour {
     public void OnPlayMenuClickBtn()
     {
         MenuClickBtn.Play();
+    }
+
+    public void OnPlaySwap()
+    {
+        Swap.Play();
+    }
+    public void OnPlayUnSwap()
+    {
+        UnSwap.Play();
+    }
+    public void OnPlayBoom()
+    {
+        Boom.Play();
+    }
+    
+    public void OnPlaySelect()
+    {
+        Select.Play();
+    }
+    public void OnPlayWhistle()
+    {
+        Whistle.Play();
+    }
+    public void OnPlayWarning()
+    {
+        Warning.Play();
+    }
+    public void OffWarning()
+    {
+        Warning.Stop();
+    }
+    public void OnPlayTimeover()
+    {
+        Timeover.Play();
+    }
+
+    public void OnPlayReadyGo()
+    {
+        ReadyGo.Play();
+    }
+
+    public void EffectOff()
+    {
+
     }
 }

@@ -23,7 +23,10 @@ public class CGameOver : MonoBehaviour {
         ScoreTxt.text = Score.ToString();
         CoinTxt.text = ScenePlayGame.Coin.ToString();
         StartCoroutine(ScoreAni());
-        
+        //CSoundEffect.instance.OffWarning();
+        CSoundBGM.instance.Bgmoff();
+        CSoundEffect.instance.OnPlayWhistle();
+        CSoundEffect.instance.OnPlayTimeover();
 	}
 	
 	// Update is called once per frame
@@ -55,6 +58,7 @@ public class CGameOver : MonoBehaviour {
     public void OnClickGoLobbyBtn()
     {
         UserData.Coin += ScenePlayGame.Coin;
+        CSoundBGM.instance.OnPlayIntroBgm();
         SceneManager.LoadScene("CSceneLobby");
     }
 

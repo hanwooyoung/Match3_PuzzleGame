@@ -43,21 +43,16 @@ public class CSoundBGM : MonoBehaviour {
         PlayBgm.Play();
     }
 
-
-    public IEnumerator Bgmoff()
+    public void OnPlayIntroBgm()
     {
-        for (;;)
-        {
-            if (IsBgmOn == false)
-            {
-                this.gameObject.SetActive(false);
-            }
-            else
-            {
-                this.gameObject.SetActive(true);
-            }
-            yield return new WaitForSeconds(0.5f);
-        }
+        PlayBgm.Stop();
+        IntroBgm.Play();
+    }
+
+    public void Bgmoff()
+    {
+        IntroBgm.Stop();
+        PlayBgm.Stop();
       
     }
 }

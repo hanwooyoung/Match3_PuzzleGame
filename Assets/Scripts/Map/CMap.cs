@@ -125,7 +125,7 @@ public class CMap : MonoBehaviour {
                     tBlock.BlockCoordinate.Y = ti;
                     VecArray[tj, ti] = tVec;
                 }
-                Debug.Log("(" + tj + "," + ti + ")"+ "=" + MapArray[tj, ti]);
+                //Debug.Log("(" + tj + "," + ti + ")"+ "=" + MapArray[tj, ti]);
             }
         }
     }

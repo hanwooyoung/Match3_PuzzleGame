@@ -247,7 +247,7 @@ public class CBoomCheck : MonoBehaviour {
                             BoomBlockList.Push(BlockArray[SelectBlock.BlockCoordinate.X + (tNumber * tMinus), SelectBlock.BlockCoordinate.Y]);
                         }
 
-                        if (SeletBlockKind == BlockArray[SelectBlock.BlockCoordinate.X + (tNumber * tMinus), SelectBlock.BlockCoordinate.Y].Kind && ti >= 3)
+                        if (BlockArray[SelectBlock.BlockCoordinate.X + (tNumber * tMinus), SelectBlock.BlockCoordinate.Y] != null && SeletBlockKind == BlockArray[SelectBlock.BlockCoordinate.X + (tNumber * tMinus), SelectBlock.BlockCoordinate.Y].Kind && ti >= 3)
                         {
                             if (BoomBlockList.Contains(BlockArray[SelectBlock.BlockCoordinate.X + (tNumber * tMinus), SelectBlock.BlockCoordinate.Y]) == false)
                             {
@@ -284,7 +284,7 @@ public class CBoomCheck : MonoBehaviour {
     {
         
 
-        if (SelectBlock.BlockCoordinate.Y + 2 < CMap.Col && SeletBlockKind != CMap.Kind.None)
+        if (SelectBlock.BlockCoordinate.Y + 2 < CMap.Col-1 && SeletBlockKind != CMap.Kind.None)
         {
             if (BlockArray[SelectBlock.BlockCoordinate.X, SelectBlock.BlockCoordinate.Y + 1] == null ||
                 BlockArray[SelectBlock.BlockCoordinate.X, SelectBlock.BlockCoordinate.Y + 2] == null)
@@ -298,35 +298,39 @@ public class CBoomCheck : MonoBehaviour {
                 IsBoomCheck = true;
                 //Debug.Log("Up");
 
-                for (int ti = 0; SelectBlock.BlockCoordinate.Y + ti < CMap.Raw; ti++)
+                for (int ti = 0; SelectBlock.BlockCoordinate.Y + ti < CMap.Raw-1; ti++)
                 {
                     if (SelectBlock == null)
                     {
                         Debug.Log("SelectBlock is null");
                         return;
                     }
-                    if (BoomBlockList.Contains(BlockArray[SelectBlock.BlockCoordinate.X, SelectBlock.BlockCoordinate.Y + ti]) == false && ti < 3)
+                    if (SelectBlock.BlockCoordinate.Y + ti < CMap.Raw-1)
                     {
-                        BoomBlockList.Push(BlockArray[SelectBlock.BlockCoordinate.X, SelectBlock.BlockCoordinate.Y + ti]);
-                    }
-                    if (SeletBlockKind == BlockArray[SelectBlock.BlockCoordinate.X, SelectBlock.BlockCoordinate.Y + ti].Kind && ti >= 3)
-                    {
-                        if (BoomBlockList.Contains(BlockArray[SelectBlock.BlockCoordinate.X, SelectBlock.BlockCoordinate.Y + ti]) == false)
+                        if (BoomBlockList.Contains(BlockArray[SelectBlock.BlockCoordinate.X, SelectBlock.BlockCoordinate.Y + ti]) == false && ti < 3)
                         {
                             BoomBlockList.Push(BlockArray[SelectBlock.BlockCoordinate.X, SelectBlock.BlockCoordinate.Y + ti]);
-                            Debug.Log("4개이상?");
-                            //if (ti >= 5)
-                            //{
-                            //    IsFiveBoomCheck = true;
-                            //    Debug.Log("5개이상!");
-                            //}
-                            IsUpBoomCheck = true;
+                        }
+                        if (BlockArray[SelectBlock.BlockCoordinate.X, SelectBlock.BlockCoordinate.Y + ti] != null && SeletBlockKind == BlockArray[SelectBlock.BlockCoordinate.X, SelectBlock.BlockCoordinate.Y + ti].Kind && ti >= 3)
+                        {
+                            if (BoomBlockList.Contains(BlockArray[SelectBlock.BlockCoordinate.X, SelectBlock.BlockCoordinate.Y + ti]) == false)
+                            {
+                                BoomBlockList.Push(BlockArray[SelectBlock.BlockCoordinate.X, SelectBlock.BlockCoordinate.Y + ti]);
+                                Debug.Log("4개이상?");
+                                //if (ti >= 5)
+                                //{
+                                //    IsFiveBoomCheck = true;
+                                //    Debug.Log("5개이상!");
+                                //}
+                                IsUpBoomCheck = true;
+                            }
+                        }
+                        else if (BlockArray[SelectBlock.BlockCoordinate.X, SelectBlock.BlockCoordinate.Y + ti] != null && SeletBlockKind != BlockArray[SelectBlock.BlockCoordinate.X, SelectBlock.BlockCoordinate.Y + ti].Kind)
+                        {
+                            break;
                         }
                     }
-                    else if (SeletBlockKind != BlockArray[SelectBlock.BlockCoordinate.X, SelectBlock.BlockCoordinate.Y + ti].Kind)
-                    {
-                        break;
-                    }
+                    
                 }
             }
         }
@@ -406,30 +410,34 @@ public class CBoomCheck : MonoBehaviour {
                     }
                     if (SelectBlock.BlockCoordinate.Y + (tNumber * tMinus) > 0 && SelectBlock.BlockCoordinate.Y + (tNumber * tMinus) < CMap.Col)
                     {
-                        if (BoomBlockList.Contains(BlockArray[SelectBlock.BlockCoordinate.X , SelectBlock.BlockCoordinate.Y + (tNumber * tMinus)]) == false && ti < 3)
+                        if(BlockArray[SelectBlock.BlockCoordinate.X, SelectBlock.BlockCoordinate.Y + (tNumber * tMinus)] != null)
                         {
-                            BoomBlockList.Push(BlockArray[SelectBlock.BlockCoordinate.X , SelectBlock.BlockCoordinate.Y + (tNumber * tMinus)]);
-                        }
-
-                        if (SeletBlockKind == BlockArray[SelectBlock.BlockCoordinate.X , SelectBlock.BlockCoordinate.Y + (tNumber * tMinus)].Kind && ti >= 3)
-                        {
-                            if (BoomBlockList.Contains(BlockArray[SelectBlock.BlockCoordinate.X , SelectBlock.BlockCoordinate.Y + (tNumber * tMinus)]) == false)
+                            if (BoomBlockList.Contains(BlockArray[SelectBlock.BlockCoordinate.X, SelectBlock.BlockCoordinate.Y + (tNumber * tMinus)]) == false && ti < 3)
                             {
                                 BoomBlockList.Push(BlockArray[SelectBlock.BlockCoordinate.X, SelectBlock.BlockCoordinate.Y + (tNumber * tMinus)]);
-                                Debug.Log("4개이상?");
-                                //if (ti >= 5)
-                                //{
-                                //    IsFiveBoomCheck = true;
-                                //    Debug.Log("5개이상!");
-                                //}
-                                IsSideYBoomCheck = true;
                             }
 
+                            if (SeletBlockKind == BlockArray[SelectBlock.BlockCoordinate.X, SelectBlock.BlockCoordinate.Y + (tNumber * tMinus)].Kind && ti >= 3)
+                            {
+                                if (BoomBlockList.Contains(BlockArray[SelectBlock.BlockCoordinate.X, SelectBlock.BlockCoordinate.Y + (tNumber * tMinus)]) == false)
+                                {
+                                    BoomBlockList.Push(BlockArray[SelectBlock.BlockCoordinate.X, SelectBlock.BlockCoordinate.Y + (tNumber * tMinus)]);
+                                    Debug.Log("4개이상?");
+                                    //if (ti >= 5)
+                                    //{
+                                    //    IsFiveBoomCheck = true;
+                                    //    Debug.Log("5개이상!");
+                                    //}
+                                    IsSideYBoomCheck = true;
+                                }
+
+                            }
+                            else if (SeletBlockKind != BlockArray[SelectBlock.BlockCoordinate.X, SelectBlock.BlockCoordinate.Y + (tNumber * tMinus)].Kind)
+                            {
+                                break;
+                            }
                         }
-                        else if (SeletBlockKind != BlockArray[SelectBlock.BlockCoordinate.X, SelectBlock.BlockCoordinate.Y + (tNumber * tMinus)].Kind)
-                        {
-                            break;
-                        }
+                        
                     }
 
                     if (ti % 2 == 0 || ti == 0)
@@ -448,12 +456,16 @@ public class CBoomCheck : MonoBehaviour {
 
     public void SetSeletBlock(CBlock tSelectBlock)
     {
-        SelectBlock = tSelectBlock;
-        SeletBlockKind = SelectBlock.Kind;
-        if(SeletBlockKind == CMap.Kind.Wall)
+        if(tSelectBlock != null)
         {
-            SeletBlockKind = CMap.Kind.None;
+            SelectBlock = tSelectBlock;
+            SeletBlockKind = SelectBlock.Kind;
+            if (SeletBlockKind == CMap.Kind.Wall)
+            {
+                SeletBlockKind = CMap.Kind.None;
+            }
         }
+        
     }
 
     public List<CBlock> BoomList = new List<CBlock>();
