@@ -190,7 +190,7 @@ public class CBoomCheck : MonoBehaviour {
                     {
                         BoomBlockList.Push(BlockArray[SelectBlock.BlockCoordinate.X + ti, SelectBlock.BlockCoordinate.Y]);
                     }
-                    if (SeletBlockKind == BlockArray[SelectBlock.BlockCoordinate.X + ti, SelectBlock.BlockCoordinate.Y].Kind && ti >= 3)
+                    if (BlockArray[SelectBlock.BlockCoordinate.X + ti, SelectBlock.BlockCoordinate.Y] != null && SeletBlockKind == BlockArray[SelectBlock.BlockCoordinate.X + ti, SelectBlock.BlockCoordinate.Y].Kind && ti >= 3)
                     {
                         if (BoomBlockList.Contains(BlockArray[SelectBlock.BlockCoordinate.X + ti, SelectBlock.BlockCoordinate.Y]) == false)
                         {

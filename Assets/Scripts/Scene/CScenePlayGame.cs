@@ -12,6 +12,7 @@ public class CScenePlayGame : MonoBehaviour {
     public CUserData UserData = null;
     public CUIPlayGame UIPlayGame = null;
     public CGameOver GameoverPanel = null;
+    public CPause PausePanel = null;
     public CUILobby UILobby = null;
     
     public CBlock SelectBlock = null;
@@ -29,6 +30,23 @@ public class CScenePlayGame : MonoBehaviour {
     public bool IsWarningSonudOn = false;
 
     public bool IsBlockBoom = false;
+
+
+    private bool mIsBlockDontTouch = true;
+    public bool IsBlockDontTouch
+    {
+        get
+        {
+            return mIsBlockDontTouch;
+        }
+        set
+        {
+            mIsBlockDontTouch = value;
+        }
+    }
+
+
+
     private bool mIsDontMove = false;
     public bool IsDontMove
     {
@@ -93,9 +111,6 @@ public class CScenePlayGame : MonoBehaviour {
             return mCurrentHp;
         }
     }
-    public float HpTickPerHp = 0.016f;
-    public float HpTickPerHpRatio = 0.01f;
-    private Coroutine mCoroutineTickHp = null;
 
     private void Awake()
     {
@@ -104,7 +119,7 @@ public class CScenePlayGame : MonoBehaviour {
         BoomCheck.SetBlockArray(Map.BlockArray);
         //GameoverPanel = new CGameOver();
         GameoverPanel.SetScene(this);
-
+        PausePanel.SetScene(this);
         UserData = new CUserData();
 
         PossibleBoomCheck = new CPossibleBoomCheck();
@@ -119,7 +134,7 @@ public class CScenePlayGame : MonoBehaviour {
         Map.SetParent(this.transform);
         Map.CreateMap();
         //StartCoroutine(ReCreateBlock());
-        StartCoroutine(IsCheckUpDate());
+        
         
 
         for (int ti = 0; ti < CMap.Raw; ti++)
@@ -130,14 +145,23 @@ public class CScenePlayGame : MonoBehaviour {
             }
         }
         CSoundEffect.instance.OnPlayReadyGo();
-        StartCoroutine(Map.BlockNullCheck());
-        mCoroutineTickHp = StartCoroutine(TickHp());
+        UIPlayGame.ShowReady();
+        Invoke("Ready", 2.0f);
+
     }
 
-    public void GameStart()
+    public void Ready()
     {
-        Debug.Log("이것도 멈춤?");
-        Time.timeScale = 1;
+        IsBlockDontTouch = false;
+        StartCoroutine(IsCheckUpDate());
+        StartCoroutine(Map.BlockNullCheck());
+        StartCoroutine(TickHp());
+
+    }
+
+    public void OnPause()
+    {
+
     }
 
     // Update is called once per frame
@@ -199,7 +223,11 @@ public class CScenePlayGame : MonoBehaviour {
         {
             UserData.BestScore = Score;
         }
-        
+        IsBlockDontTouch = true;
+        StopCoroutine(IsCheckUpDate());
+        StopCoroutine(Map.BlockNullCheck());
+        StopCoroutine(TickHp());
+
 
 
     }

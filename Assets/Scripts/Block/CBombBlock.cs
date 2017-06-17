@@ -18,17 +18,24 @@ public class CBombBlock : CBlock {
 	}
     private void OnMouseUp()
     {
-        switch(Kind)
+        if (ScenePlayGeme.IsBlockDontTouch == false)
         {
-            case CMap.Kind.VerticalBomb:
-                BoomVerticalBomb(this);
-                break;
-            case CMap.Kind.HorizontalBomb:
-                BoomHorizontalBomb(this);
-                break;
-            case CMap.Kind.FiveBomb:
-                BoomFiveBomb(this);
-                break;
+            switch (Kind)
+            {
+                case CMap.Kind.VerticalBomb:
+                    BoomVerticalBomb(this);
+                    ScenePlayGeme.CurrentHp.Value += 3;
+                    break;
+                case CMap.Kind.HorizontalBomb:
+                    BoomHorizontalBomb(this);
+                    ScenePlayGeme.CurrentHp.Value += 3;
+                    break;
+                case CMap.Kind.FiveBomb:
+                    BoomFiveBomb(this);
+                    ScenePlayGeme.CurrentHp.Value += 4;
+                    break;
+            }
+            
         }
         //BoomCheck();
     }

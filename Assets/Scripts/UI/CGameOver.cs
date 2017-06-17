@@ -57,8 +57,11 @@ public class CGameOver : MonoBehaviour {
 
     public void OnClickGoLobbyBtn()
     {
+        Score = 0;
         UserData.Coin += ScenePlayGame.Coin;
         CSoundBGM.instance.OnPlayIntroBgm();
+        StopCoroutine(ScoreAni());
+        Time.timeScale = 1;
         SceneManager.LoadScene("CSceneLobby");
     }
 
