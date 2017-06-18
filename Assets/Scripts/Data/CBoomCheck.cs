@@ -204,7 +204,7 @@ public class CBoomCheck : MonoBehaviour {
                             IsRightBoomCheck = true;
                         }
                     }
-                    else if(SeletBlockKind != BlockArray[SelectBlock.BlockCoordinate.X + ti, SelectBlock.BlockCoordinate.Y].Kind)
+                    else if (BlockArray[SelectBlock.BlockCoordinate.X + ti, SelectBlock.BlockCoordinate.Y] != null && SeletBlockKind != BlockArray[SelectBlock.BlockCoordinate.X + ti, SelectBlock.BlockCoordinate.Y].Kind)
                     {
                         break;
                     }
@@ -468,7 +468,7 @@ public class CBoomCheck : MonoBehaviour {
         
     }
 
-    public List<CBlock> BoomList = new List<CBlock>();
+    //public List<CBlock> BoomList = new List<CBlock>();
 
     public void FiveBombCheck()
     {
@@ -521,14 +521,14 @@ public class CBoomCheck : MonoBehaviour {
 
     public void Stack()
     {
-        int tY = 0;
-        foreach (var ti in BoomList)
-        {
+        //int tY = 0;
+        //foreach (var ti in BoomList)
+        //{
             
-            Debug.Log( tY+""+ti + "Stack = X: " + ti.BlockCoordinate.X + ",Y: " + ti.BlockCoordinate.Y);
-            tY++;
-        }
-        tY = 0;
+        //    Debug.Log( tY+""+ti + "Stack = X: " + ti.BlockCoordinate.X + ",Y: " + ti.BlockCoordinate.Y);
+        //    tY++;
+        //}
+        //tY = 0;
     }
 
     public void BoomBlockListClear()

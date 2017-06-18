@@ -29,7 +29,10 @@ public class CUILobby : MonoBehaviour {
     public Text TimeText = null;
     public CUserData UserData = null;
 
-    public GameObject HeartShopPopup = null;
+    public CHeartShopPopup HeartShopPopup = null;
+    public GameObject HeartNotPanel = null;
+    public GameObject CoinNotPanel = null;
+    public GameObject CoinShopPopup = null;
 
     
 
@@ -46,7 +49,7 @@ public class CUILobby : MonoBehaviour {
 
             TimeText.text = string.Format("{0} :{1:D2}", Min, Sec);
         });
-
+        HeartShopPopup.SetUILobby(this);
     }
     // Use this for initialization
     void Start () {
@@ -78,6 +81,7 @@ public class CUILobby : MonoBehaviour {
         else
         {
             Debug.Log("하트없음");
+            HeartNotPanel.SetActive(true);
         }
     }
 
@@ -177,6 +181,18 @@ public class CUILobby : MonoBehaviour {
     public void OnClickHeartShopPopUpBtn()
     {
         CSoundEffect.instance.OnPlayMenuClickBtn();
-        HeartShopPopup.SetActive(true);
+        HeartShopPopup.gameObject.SetActive(true);
+    }
+
+    public void OnClickHeartNotPanelYesBtn()
+    {
+        CSoundEffect.instance.OnPlayMenuClickBtn();
+        HeartNotPanel.SetActive(false);
+        HeartShopPopup.gameObject.SetActive(true);
+    }
+    public void OnClickHeartNotPanelYNoBtn()
+    {
+        CSoundEffect.instance.OnPlayMenuClickBtn();
+        HeartNotPanel.SetActive(false);
     }
 }

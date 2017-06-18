@@ -6,15 +6,15 @@ public class CPossibleBoomCheck : MonoBehaviour {
 
     public CMap.Kind[,] MapArray = null;
 
-    // Use this for initialization
-    void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+    public struct PossibleBlockcoordinates
+    {
+        public int X;
+        public int Y;
+    }
+
+    public PossibleBlockcoordinates[] PossiblsBoomList = new PossibleBlockcoordinates[3];
+
+
 
     public void IsCheck()
     {
@@ -27,11 +27,17 @@ public class CPossibleBoomCheck : MonoBehaviour {
                 {
                     if (MapArray[tj, ti] == MapArray[tj - 1, ti + 1] && MapArray[tj, ti] == MapArray[tj - 2, ti + 1])
                     {
-                        Debug.Log("(" + tj + "," + ti + ")");
-                        Debug.Log("(" + (tj - 1) + "," + (ti+1) + ")");
-                        Debug.Log("(" + (tj-2) + "," + (ti+1) + ")");
+                        //Debug.Log("(" + tj + "," + ti + ")");
+                        //Debug.Log("(" + (tj - 1) + "," + (ti+1) + ")");
+                        //Debug.Log("(" + (tj-2) + "," + (ti+1) + ")");
 
-                        Debug.Log("ㅇㅋ");
+                        //Debug.Log("ㅇㅋ");
+                        PossiblsBoomList[0].X = tj;
+                        PossiblsBoomList[0].Y = ti;
+                        PossiblsBoomList[1].X = tj - 1;
+                        PossiblsBoomList[1].Y = ti + 1;
+                        PossiblsBoomList[2].X = tj - 2;
+                        PossiblsBoomList[2].Y = ti + 1;
                     }
                 }
 
@@ -40,10 +46,17 @@ public class CPossibleBoomCheck : MonoBehaviour {
                 {
                     if (MapArray[tj, ti] == MapArray[tj - 1, ti - 1] && MapArray[tj, ti] == MapArray[tj - 2, ti - 1])
                     {
-                        Debug.Log("(" + tj + "," + ti + ")");
-                        Debug.Log("(" + (tj - 1) + "," + (ti - 1) + ")");
-                        Debug.Log("(" + (tj - 2) + "," + (ti - 1) + ")");
-                        Debug.Log("ㅇㅋ");
+                        //Debug.Log("(" + tj + "," + ti + ")");
+                        //Debug.Log("(" + (tj - 1) + "," + (ti - 1) + ")");
+                        //Debug.Log("(" + (tj - 2) + "," + (ti - 1) + ")");
+                        //Debug.Log("ㅇㅋ");
+
+                        PossiblsBoomList[0].X = tj;
+                        PossiblsBoomList[0].Y = ti;
+                        PossiblsBoomList[1].X = tj - 1;
+                        PossiblsBoomList[1].Y = ti - 1;
+                        PossiblsBoomList[2].X = tj - 2;
+                        PossiblsBoomList[2].Y = ti - 1;
                     }
                 }
                 //3
@@ -51,10 +64,16 @@ public class CPossibleBoomCheck : MonoBehaviour {
                 {
                     if (MapArray[tj, ti] == MapArray[tj - 2, ti] && MapArray[tj, ti] == MapArray[tj - 3, ti])
                     {
-                        Debug.Log("(" + tj + "," + ti + ")");
-                        Debug.Log("(" + (tj - 1) + "," + ti + ")");
-                        Debug.Log("(" + (tj - 3) + "," + ti + ")");
-                        Debug.Log("ㅇㅋ");
+                        //Debug.Log("(" + tj + "," + ti + ")");
+                        //Debug.Log("(" + (tj - 1) + "," + ti + ")");
+                        //Debug.Log("(" + (tj - 3) + "," + ti + ")");
+                        //Debug.Log("ㅇㅋ");
+                        PossiblsBoomList[0].X = tj;
+                        PossiblsBoomList[0].Y = ti;
+                        PossiblsBoomList[1].X = tj - 2;
+                        PossiblsBoomList[1].Y = ti;
+                        PossiblsBoomList[2].X = tj - 3;
+                        PossiblsBoomList[2].Y = ti;
                     }
                 }
                 //4
@@ -62,10 +81,16 @@ public class CPossibleBoomCheck : MonoBehaviour {
                 {
                     if (MapArray[tj, ti] == MapArray[tj + 1, ti + 1] && MapArray[tj, ti] == MapArray[tj + 2, ti + 1])
                     {
-                        Debug.Log("(" + tj + "," + ti + ")");
-                        Debug.Log("(" + (tj + 1) + "," + (ti + 1) + ")");
-                        Debug.Log("(" + (tj + 2) + "," + (ti + 1) + ")");
-                        Debug.Log("ㅇㅋ");
+                        //Debug.Log("(" + tj + "," + ti + ")");
+                        //Debug.Log("(" + (tj + 1) + "," + (ti + 1) + ")");
+                        //Debug.Log("(" + (tj + 2) + "," + (ti + 1) + ")");
+                        //Debug.Log("ㅇㅋ");
+                        PossiblsBoomList[0].X = tj;
+                        PossiblsBoomList[0].Y = ti;
+                        PossiblsBoomList[1].X = tj + 1;
+                        PossiblsBoomList[1].Y = ti + 1;
+                        PossiblsBoomList[2].X = tj + 2;
+                        PossiblsBoomList[2].Y = ti + 1;
                     }
                 }
                 //5
@@ -73,10 +98,16 @@ public class CPossibleBoomCheck : MonoBehaviour {
                 {
                     if (MapArray[tj, ti] == MapArray[tj + 1, ti - 1] && MapArray[tj, ti] == MapArray[tj + 2, ti - 1])
                     {
-                        Debug.Log("(" + tj + "," + ti + ")");
-                        Debug.Log("(" + (tj + 1) + "," + (ti - 1) + ")");
-                        Debug.Log("(" + (tj + 2) + "," + (ti - 1) + ")");
-                        Debug.Log("ㅇㅋ");
+                        //Debug.Log("(" + tj + "," + ti + ")");
+                        //Debug.Log("(" + (tj + 1) + "," + (ti - 1) + ")");
+                        //Debug.Log("(" + (tj + 2) + "," + (ti - 1) + ")");
+                        //Debug.Log("ㅇㅋ");
+                        PossiblsBoomList[0].X = tj;
+                        PossiblsBoomList[0].Y = ti;
+                        PossiblsBoomList[1].X = tj + 1;
+                        PossiblsBoomList[1].Y = ti - 1;
+                        PossiblsBoomList[2].X = tj + 2;
+                        PossiblsBoomList[2].Y = ti - 1;
                     }
                 }
                 //6
@@ -84,11 +115,16 @@ public class CPossibleBoomCheck : MonoBehaviour {
                 {
                     if (MapArray[tj, ti] == MapArray[tj + 2, ti] && MapArray[tj, ti] == MapArray[tj + 3, ti])
                     {
-                        Debug.Log("(" + tj + "," + ti + ")");
-                        Debug.Log("(" + (tj + 2) + "," + ti + ")");
-                        Debug.Log("(" + (tj + 3) + "," + ti + ")");
-                        Debug.Log("ㅇㅋ");
-
+                        //Debug.Log("(" + tj + "," + ti + ")");
+                        //Debug.Log("(" + (tj + 2) + "," + ti + ")");
+                        //Debug.Log("(" + (tj + 3) + "," + ti + ")");
+                        //Debug.Log("ㅇㅋ");
+                        PossiblsBoomList[0].X = tj;
+                        PossiblsBoomList[0].Y = ti;
+                        PossiblsBoomList[1].X = tj + 2;
+                        PossiblsBoomList[1].Y = ti;
+                        PossiblsBoomList[2].X = tj + 3;
+                        PossiblsBoomList[2].Y = ti;
                     }
                 }
 
@@ -97,11 +133,16 @@ public class CPossibleBoomCheck : MonoBehaviour {
                 {
                     if (MapArray[tj, ti] == MapArray[tj - 1, ti + 1] && MapArray[tj, ti] == MapArray[tj + 1, ti + 1])
                     {
-                        Debug.Log("(" + tj + "," + ti + ")");
-                        Debug.Log("(" + (tj - 1) + "," + (ti + 1) + ")");
-                        Debug.Log("(" + (tj + 1) + "," + (ti + 1) + ")");
-                        Debug.Log("ㅇㅋ");
-
+                        //Debug.Log("(" + tj + "," + ti + ")");
+                        //Debug.Log("(" + (tj - 1) + "," + (ti + 1) + ")");
+                        //Debug.Log("(" + (tj + 1) + "," + (ti + 1) + ")");
+                        //Debug.Log("ㅇㅋ");
+                        PossiblsBoomList[0].X = tj;
+                        PossiblsBoomList[0].Y = ti;
+                        PossiblsBoomList[1].X = tj - 1;
+                        PossiblsBoomList[1].Y = ti + 1;
+                        PossiblsBoomList[2].X = tj + 1;
+                        PossiblsBoomList[2].Y = ti + 1;
                     }
                 }
                 //8
@@ -109,11 +150,16 @@ public class CPossibleBoomCheck : MonoBehaviour {
                 {
                     if (MapArray[tj, ti] == MapArray[tj - 1, ti - 1] && MapArray[tj, ti] == MapArray[tj + 1, ti - 1])
                     {
-                        Debug.Log("(" + tj + "," + ti + ")");
-                        Debug.Log("(" + (tj - 1) + "," + (ti - 1) + ")");
-                        Debug.Log("(" + (tj + 1) + "," + (ti - 1) + ")");
-                        Debug.Log("ㅇㅋ");
-
+                        //Debug.Log("(" + tj + "," + ti + ")");
+                        //Debug.Log("(" + (tj - 1) + "," + (ti - 1) + ")");
+                        //Debug.Log("(" + (tj + 1) + "," + (ti - 1) + ")");
+                        //Debug.Log("ㅇㅋ");
+                        PossiblsBoomList[0].X = tj;
+                        PossiblsBoomList[0].Y = ti;
+                        PossiblsBoomList[1].X = tj - 1;
+                        PossiblsBoomList[1].Y = ti - 1;
+                        PossiblsBoomList[2].X = tj + 1;
+                        PossiblsBoomList[2].Y = ti - 1;
                     }
                 }
                 //9
@@ -121,11 +167,16 @@ public class CPossibleBoomCheck : MonoBehaviour {
                 {
                     if (MapArray[tj, ti] == MapArray[tj - 1, ti + 1] && MapArray[tj, ti] == MapArray[tj - 1, ti + 2])
                     {
-                        Debug.Log("(" + tj + "," + ti + ")");
-                        Debug.Log("(" + (tj - 1) + "," + (ti + 1) + ")");
-                        Debug.Log("(" + (tj - 1) + "," + (ti + 2) + ")");
-                        Debug.Log("ㅇㅋ");
-
+                        //Debug.Log("(" + tj + "," + ti + ")");
+                        //Debug.Log("(" + (tj - 1) + "," + (ti + 1) + ")");
+                        //Debug.Log("(" + (tj - 1) + "," + (ti + 2) + ")");
+                        //Debug.Log("ㅇㅋ");
+                        PossiblsBoomList[0].X = tj;
+                        PossiblsBoomList[0].Y = ti;
+                        PossiblsBoomList[1].X = tj - 1;
+                        PossiblsBoomList[1].Y = ti + 1;
+                        PossiblsBoomList[2].X = tj - 1;
+                        PossiblsBoomList[2].Y = ti + 2;
                     }
                 }
                 //10
@@ -133,11 +184,16 @@ public class CPossibleBoomCheck : MonoBehaviour {
                 {
                     if (MapArray[tj, ti] == MapArray[tj + 1, ti + 1] && MapArray[tj, ti] == MapArray[tj + 1, ti + 2])
                     {
-                        Debug.Log("(" + tj + "," + ti + ")");
-                        Debug.Log("(" + (tj + 1) + "," + (ti + 1) + ")");
-                        Debug.Log("(" + (tj + 1) + "," + (ti + 2) + ")");
-                        Debug.Log("ㅇㅋ");
-
+                        //Debug.Log("(" + tj + "," + ti + ")");
+                        //Debug.Log("(" + (tj + 1) + "," + (ti + 1) + ")");
+                        //Debug.Log("(" + (tj + 1) + "," + (ti + 2) + ")");
+                        //Debug.Log("ㅇㅋ");
+                        PossiblsBoomList[0].X = tj;
+                        PossiblsBoomList[0].Y = ti;
+                        PossiblsBoomList[1].X = tj + 1;
+                        PossiblsBoomList[1].Y = ti + 1;
+                        PossiblsBoomList[2].X = tj + 1;
+                        PossiblsBoomList[2].Y = ti + 2;
                     }
                 }
                 //11
@@ -145,11 +201,16 @@ public class CPossibleBoomCheck : MonoBehaviour {
                 {
                     if (MapArray[tj, ti] == MapArray[tj, ti + 2] && MapArray[tj, ti] == MapArray[tj, ti + 3])
                     {
-                        Debug.Log("(" + tj + "," + ti + ")");
-                        Debug.Log("(" + tj + "," + (ti + 2) + ")");
-                        Debug.Log("(" + tj + "," + (ti + 3) + ")");
-                        Debug.Log("ㅇㅋ");
-
+                        //Debug.Log("(" + tj + "," + ti + ")");
+                        //Debug.Log("(" + tj + "," + (ti + 2) + ")");
+                        //Debug.Log("(" + tj + "," + (ti + 3) + ")");
+                        //Debug.Log("ㅇㅋ");
+                        PossiblsBoomList[0].X = tj;
+                        PossiblsBoomList[0].Y = ti;
+                        PossiblsBoomList[1].X = tj;
+                        PossiblsBoomList[1].Y = ti + 2;
+                        PossiblsBoomList[2].X = tj;
+                        PossiblsBoomList[2].Y = ti + 3;
                     }
                 }
 
@@ -158,11 +219,16 @@ public class CPossibleBoomCheck : MonoBehaviour {
                 {
                     if (MapArray[tj, ti] == MapArray[tj - 1, ti - 1] && MapArray[tj, ti] == MapArray[tj - 1, ti - 2])
                     {
-                        Debug.Log("(" + tj + "," + ti + ")");
-                        Debug.Log("(" + (tj - 1) + "," + (ti - 1) + ")");
-                        Debug.Log("(" + (tj - 1) + "," + (ti - 2) + ")");
-                        Debug.Log("ㅇㅋ");
-
+                        //Debug.Log("(" + tj + "," + ti + ")");
+                        //Debug.Log("(" + (tj - 1) + "," + (ti - 1) + ")");
+                        //Debug.Log("(" + (tj - 1) + "," + (ti - 2) + ")");
+                        //Debug.Log("ㅇㅋ");
+                        PossiblsBoomList[0].X = tj;
+                        PossiblsBoomList[0].Y = ti;
+                        PossiblsBoomList[1].X = tj - 1;
+                        PossiblsBoomList[1].Y = ti - 1;
+                        PossiblsBoomList[2].X = tj - 1;
+                        PossiblsBoomList[2].Y = ti - 2;
                     }
                 }
                 //13
@@ -170,11 +236,16 @@ public class CPossibleBoomCheck : MonoBehaviour {
                 {
                     if (MapArray[tj, ti] == MapArray[tj + 1, ti - 1] && MapArray[tj, ti] == MapArray[tj + 1, ti - 2])
                     {
-                        Debug.Log("(" + tj + "," + ti + ")");
-                        Debug.Log("(" + (tj + 1) + "," + (ti - 1) + ")");
-                        Debug.Log("(" + (tj + 1) + "," + (ti - 2) + ")");
-                        Debug.Log("ㅇㅋ");
-
+                        //Debug.Log("(" + tj + "," + ti + ")");
+                        //Debug.Log("(" + (tj + 1) + "," + (ti - 1) + ")");
+                        //Debug.Log("(" + (tj + 1) + "," + (ti - 2) + ")");
+                        //Debug.Log("ㅇㅋ");
+                        PossiblsBoomList[0].X = tj;
+                        PossiblsBoomList[0].Y = ti;
+                        PossiblsBoomList[1].X = tj + 1;
+                        PossiblsBoomList[1].Y = ti - 1;
+                        PossiblsBoomList[2].X = tj + 1;
+                        PossiblsBoomList[2].Y = ti - 2;
                     }
                 }
                 //14
@@ -182,11 +253,16 @@ public class CPossibleBoomCheck : MonoBehaviour {
                 {
                     if (MapArray[tj, ti] == MapArray[tj, ti - 2] && MapArray[tj, ti] == MapArray[tj, ti - 3])
                     {
-                        Debug.Log("(" + tj + "," + ti + ")");
-                        Debug.Log("(" + tj + "," + (ti - 2) + ")");
-                        Debug.Log("(" + tj + "," + (ti - 3) + ")");
-                        Debug.Log("ㅇㅋ");
-
+                        //Debug.Log("(" + tj + "," + ti + ")");
+                        //Debug.Log("(" + tj + "," + (ti - 2) + ")");
+                        //Debug.Log("(" + tj + "," + (ti - 3) + ")");
+                        //Debug.Log("ㅇㅋ");
+                        PossiblsBoomList[0].X = tj;
+                        PossiblsBoomList[0].Y = ti;
+                        PossiblsBoomList[1].X = tj;
+                        PossiblsBoomList[1].Y = ti - 2;
+                        PossiblsBoomList[2].X = tj;
+                        PossiblsBoomList[2].Y = ti - 3;
                     }
                 }
 
@@ -195,11 +271,16 @@ public class CPossibleBoomCheck : MonoBehaviour {
                 {
                     if (MapArray[tj, ti] == MapArray[tj + 1, ti + 1] && MapArray[tj, ti] == MapArray[tj + 1, ti - 1])
                     {
-                        Debug.Log("(" + tj + "," + ti + ")");
-                        Debug.Log("(" + (tj + 1) + "," + (ti + 1) + ")");
-                        Debug.Log("(" + (tj + 1) + "," + (ti - 1) + ")");
-                        Debug.Log("ㅇㅋ");
-
+                        //Debug.Log("(" + tj + "," + ti + ")");
+                        //Debug.Log("(" + (tj + 1) + "," + (ti + 1) + ")");
+                        //Debug.Log("(" + (tj + 1) + "," + (ti - 1) + ")");
+                        //Debug.Log("ㅇㅋ");
+                        PossiblsBoomList[0].X = tj;
+                        PossiblsBoomList[0].Y = ti;
+                        PossiblsBoomList[1].X = tj + 1;
+                        PossiblsBoomList[1].Y = ti + 1;
+                        PossiblsBoomList[2].X = tj + 1;
+                        PossiblsBoomList[2].Y = ti - 1;
                     }
                 }
 
@@ -208,11 +289,16 @@ public class CPossibleBoomCheck : MonoBehaviour {
                 {
                     if (MapArray[tj, ti] == MapArray[tj - 1, ti + 1] && MapArray[tj, ti] == MapArray[tj - 1, ti - 1])
                     {
-                        Debug.Log("(" + tj + "," + ti + ")");
-                        Debug.Log("(" + (tj - 1) + "," + (ti + 1) + ")");
-                        Debug.Log("(" + (tj - 1) + "," + (ti - 1) + ")");
-                        Debug.Log("ㅇㅋ");
-
+                        //Debug.Log("(" + tj + "," + ti + ")");
+                        //Debug.Log("(" + (tj - 1) + "," + (ti + 1) + ")");
+                        //Debug.Log("(" + (tj - 1) + "," + (ti - 1) + ")");
+                        //Debug.Log("ㅇㅋ");
+                        PossiblsBoomList[0].X = tj;
+                        PossiblsBoomList[0].Y = ti;
+                        PossiblsBoomList[1].X = tj - 1;
+                        PossiblsBoomList[1].Y = ti + 1;
+                        PossiblsBoomList[2].X = tj - 1;
+                        PossiblsBoomList[2].Y = ti - 1;
                     }
                 }
             }
@@ -223,4 +309,5 @@ public class CPossibleBoomCheck : MonoBehaviour {
     {
         MapArray = tMapArray;
     }
+
 }

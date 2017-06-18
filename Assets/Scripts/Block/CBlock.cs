@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 public class CBlock : MonoBehaviour {
 
@@ -21,11 +22,31 @@ public class CBlock : MonoBehaviour {
         Down = 4,
     }
 
+    public enum BlockState
+    {
+        Idle = 0,
+        Select = 1,
+        Possible =2,
+    }
+
     public CMap.Kind Kind;
     public Move BlockMove = Move.None;
     public CScenePlayGame ScenePlayGeme = null;
     public GameObject InstBody = null;
     public GameObject InstBoom = null;
+    
+    protected BlockState mCurrentState = BlockState.Idle;
+    public BlockState CurrentState
+    {
+        get
+        {
+            return mCurrentState;
+        }
+        set
+        {
+            mCurrentState = value;
+        }
+    }
 
     public void SetScene(CScenePlayGame tScenePlayGame)
     {
@@ -35,13 +56,13 @@ public class CBlock : MonoBehaviour {
  
     // Use this for initialization
     void Start () {
-		
-	}
+       
+
+    }
 	
 	// Update is called once per frame
 	void Update () {
-		
-	}
+    }
     /*
     private void OnMouseDown()
     {
@@ -78,4 +99,7 @@ public class CBlock : MonoBehaviour {
         yield return new WaitForSeconds(0.2f);
         GameObject.Destroy(gameObject);
     }
+
+   
+
 }

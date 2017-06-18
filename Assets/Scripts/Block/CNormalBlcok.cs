@@ -8,9 +8,8 @@ public class CNormalBlcok : CBlock {
     public Vector2 OnClickVec;
     public Vector2 OnDragVec;
     public Vector2 MoveVec;
+    public Animator BlockAni = null;
 
-
- 
 
     private bool mIsClick = false;
     public bool IsClick
@@ -26,9 +25,21 @@ public class CNormalBlcok : CBlock {
     }
 
     // Use this for initialization
-    void Start () {
-		
-	}
+    private void Start()
+    {
+
+        if (Kind != CMap.Kind.Wall && Kind != CMap.Kind.HorizontalBomb && Kind != CMap.Kind.VerticalBomb && Kind != CMap.Kind.FiveBomb)
+        {
+            BlockAni = InstBody.GetComponent<Animator>();
+        }
+    }
+    private void Update()
+    {
+        if (Kind != CMap.Kind.Wall && Kind != CMap.Kind.HorizontalBomb && Kind != CMap.Kind.VerticalBomb && Kind != CMap.Kind.FiveBomb)
+        {
+            State();
+        }
+    }
 
 
     private void OnMouseDown()
@@ -122,7 +133,21 @@ public class CNormalBlcok : CBlock {
         Debug.Log("Y" + BlockCoordinate.Y);
     }
 
-
-
+    public void State()
+    {
+        if(this != null)
+        {
+            switch (CurrentState)
+            {
+                case BlockState.Idle:
+                    BlockAni.SetBool("IsPossible", false);
+                    break;
+                case BlockState.Possible:
+                    BlockAni.SetBool("IsPossible", true);
+                    break;
+            }
+        }
+       
+    }
 
 }

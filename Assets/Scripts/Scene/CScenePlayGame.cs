@@ -23,6 +23,8 @@ public class CScenePlayGame : MonoBehaviour {
     public CBoomCheck BoomCheck = null;
 
     public CPossibleBoomCheck PossibleBoomCheck = null;
+    public int DontBoomCount = 0;
+    public bool IsShowPossibleBlock = false;
 
 
     public float TotalTimeHp = 60.0f;
@@ -159,16 +161,12 @@ public class CScenePlayGame : MonoBehaviour {
 
     }
 
-    public void OnPause()
-    {
-
-    }
-
     // Update is called once per frame
     void Update()
     {
 
         PossibleBoomCheck.SetMapArray(Map.MapArray);
+        PossibleBoomCheck.IsCheck();
         if (MoveVec != Vector2.zero && IsDontMove == false)
             DoSwap(MoveVec);
         if (SelectBlock == null || SwapBlock == null)
@@ -187,6 +185,35 @@ public class CScenePlayGame : MonoBehaviour {
         {
             DecrementHp(1);
             yield return new WaitForSeconds(HpTickTime);
+            DontBoomCount++;
+            if(DontBoomCount >= 5)
+            {
+                IsShowPossibleBlock = true;
+            }
+            ShowPossibleBlockList();
+        }
+    }
+
+    public void ShowPossibleBlockList()
+    {
+        if(IsShowPossibleBlock == true)
+        {
+            for(int ti = 0; ti<PossibleBoomCheck.PossiblsBoomList.Length;ti++)
+            {
+                Map.BlockArray[PossibleBoomCheck.PossiblsBoomList[ti].X, PossibleBoomCheck.PossiblsBoomList[ti].Y].CurrentState = CBlock.BlockState.Possible;
+            }
+
+        }
+        else
+        {
+
+            foreach(var tBlock in Map.BlockArray)
+            {
+                if(tBlock != null && tBlock.CurrentState == CBlock.BlockState.Possible)
+                {
+                    tBlock.CurrentState = CBlock.BlockState.Idle;
+                }
+            }
         }
     }
    
@@ -246,11 +273,7 @@ public class CScenePlayGame : MonoBehaviour {
         SwapBlock = tBlock;
     }
 
-    [Button]
-    public void InPossibleBoomCheck()
-    {
-        PossibleBoomCheck.IsCheck();
-    }
+
 
     public void DoSwap(Vector2 tMoveVec)
     {
@@ -313,8 +336,6 @@ public class CScenePlayGame : MonoBehaviour {
 
     public void InvokeUnSwap()
     {
-        //Debug.Log("IsBoomCheck" + BoomCheck.IsBoomCheck);
-        //Debug.Log("IsBlockBoom" + IsBlockBoom);
         if (BoomCheck.IsBoomCheck == false)// && IsBlockBoom == false )
         {
 
@@ -565,65 +586,69 @@ public class CScenePlayGame : MonoBehaviour {
     public IEnumerator ReCreateBlock()
     {
         yield return new WaitForSeconds(0.5f);
-        for (int ti = 1; ti < CMap.Raw - 1; ti++)
+        if(IsBlockBoom == false)
         {
-            for (int tj = 1; tj < CMap.Col - 1; tj++)
+            for (int ti = 1; ti < CMap.Raw - 1; ti++)
             {
-                if (Map.MapArray[tj, ti] == CMap.Kind.None)
+                for (int tj = 1; tj < CMap.Col - 1; tj++)
                 {
-                    CBlock tBlock = null;
-                    Vector2 tVec = new Vector2((float)tj / (float)1.11 - (float)3.6, (float)ti / (float)1.11 - (float)4.2);
-                    Vector2 tCreateVec = new Vector2(tVec.x, tVec.y + 2.0f);
-
-                    int tRandom = 0;
-                    tRandom = Random.Range(5, 10);
-                    CMap.Kind tCurrentBlock = (CMap.Kind)tRandom;
-
-                    Map.MapArray[tj, ti] = tCurrentBlock;
-                    CMap.Kind tRawBlock = tCurrentBlock;
-
-
-                    if (tj >= 3)
+                    if (Map.MapArray[tj, ti] == CMap.Kind.None)
                     {
-                        if (Map.MapArray[tj, ti] == Map.MapArray[tj - 1, ti] && Map.MapArray[tj, ti] == Map.MapArray[tj - 2, ti])
+                        CBlock tBlock = null;
+                        Vector2 tVec = new Vector2((float)tj / (float)1.11 - (float)3.6, (float)ti / (float)1.11 - (float)4.2);
+                        Vector2 tCreateVec = new Vector2(tVec.x, tVec.y + 2.0f);
+
+                        int tRandom = 0;
+                        tRandom = Random.Range(5, 10);
+                        CMap.Kind tCurrentBlock = (CMap.Kind)tRandom;
+
+                        Map.MapArray[tj, ti] = tCurrentBlock;
+                        CMap.Kind tRawBlock = tCurrentBlock;
+
+
+                        if (tj >= 3)
                         {
-                            do
+                            if (Map.MapArray[tj, ti] == Map.MapArray[tj - 1, ti] && Map.MapArray[tj, ti] == Map.MapArray[tj - 2, ti])
                             {
-                                tRandom = Random.Range(5, 10);
-                            }
-                            while (tCurrentBlock == (CMap.Kind)tRandom);
+                                do
+                                {
+                                    tRandom = Random.Range(5, 10);
+                                }
+                                while (tCurrentBlock == (CMap.Kind)tRandom);
 
-                            tCurrentBlock = (CMap.Kind)tRandom;
-                            Map.MapArray[tj, ti] = tCurrentBlock;
-                            tRawBlock = tCurrentBlock;
+                                tCurrentBlock = (CMap.Kind)tRandom;
+                                Map.MapArray[tj, ti] = tCurrentBlock;
+                                tRawBlock = tCurrentBlock;
+                            }
                         }
-                    }
-                    if (ti >= 3)
-                    {
-                        if (Map.MapArray[tj, ti] == Map.MapArray[tj, ti - 1] && Map.MapArray[tj, ti] == Map.MapArray[tj, ti - 2])
+                        if (ti >= 3)
                         {
-                            do
+                            if (Map.MapArray[tj, ti] == Map.MapArray[tj, ti - 1] && Map.MapArray[tj, ti] == Map.MapArray[tj, ti - 2])
                             {
-                                tRandom = Random.Range(5, 10);
+                                do
+                                {
+                                    tRandom = Random.Range(5, 10);
+                                }
+                                while (tCurrentBlock == (CMap.Kind)tRandom && tRawBlock == (CMap.Kind)tRandom);
+
+                                tCurrentBlock = (CMap.Kind)tRandom;
+                                Map.MapArray[tj, ti] = tCurrentBlock;
                             }
-                            while (tCurrentBlock == (CMap.Kind)tRandom && tRawBlock == (CMap.Kind)tRandom);
-
-                            tCurrentBlock = (CMap.Kind)tRandom;
-                            Map.MapArray[tj, ti] = tCurrentBlock;
                         }
+
+
+                        tBlock = GameObject.Instantiate(Map.BlockLoader.GetPrefab(Map.MapArray[tj, ti]), tCreateVec, Quaternion.identity);
+                        tBlock.transform.DOMove(tVec, 0.25f);
+                        tBlock.transform.SetParent(this.transform);
+                        Map.BlockArray[tj, ti] = tBlock;
+                        Map.BlockArray[tj, ti].SetScene(this);
+                        tBlock.BlockCoordinate.X = tj;
+                        tBlock.BlockCoordinate.Y = ti;
                     }
-
-
-                    tBlock = GameObject.Instantiate(Map.BlockLoader.GetPrefab(Map.MapArray[tj, ti]), tCreateVec, Quaternion.identity);
-                    tBlock.transform.DOMove(tVec, 0.25f);
-                    tBlock.transform.SetParent(this.transform);
-                    Map.BlockArray[tj, ti] = tBlock;
-                    Map.BlockArray[tj, ti].SetScene(this);
-                    tBlock.BlockCoordinate.X = tj;
-                    tBlock.BlockCoordinate.Y = ti;
                 }
             }
         }
+       
 
 
     }
@@ -672,6 +697,8 @@ public class CScenePlayGame : MonoBehaviour {
                             Map.BlockArray[tj, ti].DoBoom();
                             Map.MapArray[tj, ti] = CMap.Kind.None;
                             IsBlockBoom = true;
+                            DontBoomCount = 0;
+                            IsShowPossibleBlock = false;
                         }
                     }
                 }
