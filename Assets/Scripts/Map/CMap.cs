@@ -66,7 +66,7 @@ public class CMap : MonoBehaviour {
             for(int tj = 0; tj <Col;tj++)
             {
                 CBlock tBlock = null;
-                Vector2 tVec = new Vector2((float)tj/(float)1.11   - (float)3.6 , (float)ti / (float)1.11 - (float)4.2);
+                Vector2 tVec = new Vector2((float)tj/(float)1.2 - (float)3.35 , (float)ti / (float)1.11 - (float)4.2);
 
                 if (MapArray[tj, ti] == Kind.Wall)
                 {
@@ -110,7 +110,7 @@ public class CMap : MonoBehaviour {
                             {
                                 tRandom = Random.Range(5, 10);
                             }
-                            while (tCurrentBlock == (Kind)tRandom && tRawBlock == (Kind)tRandom);
+                            while (tCurrentBlock == (Kind)tRandom || tRawBlock == (Kind)tRandom);
 
                             tCurrentBlock = (Kind)tRandom;
                             MapArray[tj, ti] = tCurrentBlock;

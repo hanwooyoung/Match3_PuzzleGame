@@ -31,6 +31,7 @@ public class CHeartShopPopup : MonoBehaviour {
             }
             else
             {
+                UILobby.CoinNotPanel.SetActive(true);
                 Debug.Log("돈부족");
             }
         }

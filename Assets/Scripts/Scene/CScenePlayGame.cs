@@ -249,8 +249,12 @@ public class CScenePlayGame : MonoBehaviour {
         if(UserData.BestScore < Score)
         {
             UserData.BestScore = Score;
+            Social.ReportScore(UserData.BestScore, "CgkI2fqwgvseEAIQAQ", success => {
+                Debug.Log("report_score");
+            });
+
         }
-        IsBlockDontTouch = true;
+IsBlockDontTouch = true;
         StopCoroutine(IsCheckUpDate());
         StopCoroutine(Map.BlockNullCheck());
         StopCoroutine(TickHp());
@@ -595,7 +599,7 @@ public class CScenePlayGame : MonoBehaviour {
                     if (Map.MapArray[tj, ti] == CMap.Kind.None)
                     {
                         CBlock tBlock = null;
-                        Vector2 tVec = new Vector2((float)tj / (float)1.11 - (float)3.6, (float)ti / (float)1.11 - (float)4.2);
+                        Vector2 tVec = new Vector2((float)tj / (float)1.2 - (float)3.35, (float)ti / (float)1.11 - (float)4.2);
                         Vector2 tCreateVec = new Vector2(tVec.x, tVec.y + 2.0f);
 
                         int tRandom = 0;

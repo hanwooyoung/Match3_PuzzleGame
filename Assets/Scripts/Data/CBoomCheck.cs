@@ -142,7 +142,7 @@ public class CBoomCheck : MonoBehaviour {
                     {
                         BoomBlockList.Push(BlockArray[SelectBlock.BlockCoordinate.X - ti, SelectBlock.BlockCoordinate.Y]);
                     }
-                    if (SeletBlockKind == BlockArray[SelectBlock.BlockCoordinate.X - ti, SelectBlock.BlockCoordinate.Y].Kind && ti >= 3)
+                    if (BlockArray[SelectBlock.BlockCoordinate.X - ti, SelectBlock.BlockCoordinate.Y] != null && SeletBlockKind == BlockArray[SelectBlock.BlockCoordinate.X - ti, SelectBlock.BlockCoordinate.Y].Kind && ti >= 3)
                     {
                         if (BoomBlockList.Contains(BlockArray[SelectBlock.BlockCoordinate.X - ti, SelectBlock.BlockCoordinate.Y]) == false)
                         {
@@ -156,7 +156,7 @@ public class CBoomCheck : MonoBehaviour {
                             IsLeftBoomCheck = true;
                         }
                     }
-                    else if (SeletBlockKind != BlockArray[SelectBlock.BlockCoordinate.X - ti, SelectBlock.BlockCoordinate.Y].Kind)
+                    else if (BlockArray[SelectBlock.BlockCoordinate.X - ti, SelectBlock.BlockCoordinate.Y] != null && SeletBlockKind != BlockArray[SelectBlock.BlockCoordinate.X - ti, SelectBlock.BlockCoordinate.Y].Kind)
                     {
                         break;
                     }
@@ -262,7 +262,7 @@ public class CBoomCheck : MonoBehaviour {
                             }
 
                         }
-                        else if (SeletBlockKind != BlockArray[SelectBlock.BlockCoordinate.X + (tNumber * tMinus), SelectBlock.BlockCoordinate.Y].Kind)
+                        else if (BlockArray[SelectBlock.BlockCoordinate.X + (tNumber * tMinus), SelectBlock.BlockCoordinate.Y] != null && SeletBlockKind != BlockArray[SelectBlock.BlockCoordinate.X + (tNumber * tMinus), SelectBlock.BlockCoordinate.Y].Kind)
                         {
                             break;
                         }

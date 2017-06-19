@@ -184,6 +184,14 @@ public class CUILobby : MonoBehaviour {
         HeartShopPopup.gameObject.SetActive(true);
     }
 
+    public void OnClickCoinShopPopUpBtn()
+    {
+        CSoundEffect.instance.OnPlayMenuClickBtn();
+        CoinShopPopup.gameObject.SetActive(true);
+    }
+
+
+
     public void OnClickHeartNotPanelYesBtn()
     {
         CSoundEffect.instance.OnPlayMenuClickBtn();
@@ -195,4 +203,20 @@ public class CUILobby : MonoBehaviour {
         CSoundEffect.instance.OnPlayMenuClickBtn();
         HeartNotPanel.SetActive(false);
     }
+
+
+    public void OnClickCoinNotPanelYesBtn()
+    {
+        CSoundEffect.instance.OnPlayMenuClickBtn();
+        CoinNotPanel.SetActive(false);
+        HeartShopPopup.gameObject.SetActive(false);
+        CoinShopPopup.gameObject.SetActive(true);
+        
+    }
+    public void OnClickCoinNotPanelYNoBtn()
+    {
+        CSoundEffect.instance.OnPlayMenuClickBtn();
+        CoinNotPanel.SetActive(false);
+    }
+
 }
